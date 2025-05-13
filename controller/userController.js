@@ -20,7 +20,7 @@ async function createUser(req, res) {
             firstName,
             lastName,
             emailId,
-            password,
+            password: hashedPassword,
             age,
             gender,
             isPremium,
