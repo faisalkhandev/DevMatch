@@ -1,24 +1,35 @@
 const bcrypt = require('bcrypt');
 const { userModel } = require('../model/user.model');
-const validator = require('validator');
-
-async function createUser(req, res) {
-    const { firstName, lastName, emailId, password, } = req.body;
+const { z } = require('zod');
 
 
 
+const signUpSchema = z.object({
+    firstName: z.string().min(1, "First name is required"),
+    lastName: z.string().optional(),
+    emailId: z.string().trim().email("Invalid email address"),
+    password: z.string().min(8, "Password must be at least 8 characters")
+        .refine((val) => {
+            // Here just an example: at least one uppercase, one number
+            return /[A-Z]/.test(val) && /[0-9]/.test(val);
+        }, { message: "Password must contain at least one uppercase letter and one number" }),
+});
+
+const logInSchema = z.object({
+    emailId: z.string().email("Invalid email address"),
+    password: z.string().min(1, "Password is required"),
+});
+
+async function signUp(req, res) {
     try {
+        const parsedData = signUpSchema.parse(req.body);
 
-        if (!validator.isStrongPassword(password)) {
-            return res.status(400).send({ error: "Password must be strong." });
-        }
-
+        const { firstName, lastName, emailId, password } = parsedData;
 
         const existingUser = await userModel.findOne({ emailId });
         if (existingUser) {
             return res.status(400).send({ error: "Email already in use." });
         }
-
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -32,19 +43,20 @@ async function createUser(req, res) {
         await user.save();
 
         res.status(201).send({ message: "User created successfully!", userDetail: user });
-    } catch (error) {
-        res.status(400).send({ error: error.message });
+
+    } catch (err) {
+        if (err.name === 'ZodError') {
+            return res.status(400).send({ errors: err.errors });
+        }
+        res.status(500).send({ error: err.message });
     }
 }
 
-
-async function signIn(req, res) {
-    const { emailId, password } = req.body;
-
+async function logIn(req, res) {
     try {
-        if (!emailId || !password) {
-            return res.status(400).send({ error: "Please provide email and password." });
-        }
+        const parsedData = logInSchema.parse(req.body);
+
+        const { emailId, password } = parsedData;
 
         const user = await userModel.findOne({ emailId });
         if (!user) {
@@ -56,14 +68,16 @@ async function signIn(req, res) {
             return res.status(401).send({ error: "Invalid email or password." });
         }
 
-
         res.status(200).send({ message: "Sign in successful", userDetail: user });
-    } catch (error) {
-        res.status(500).send({ error: error.message });
+    } catch (err) {
+        if (err.name === 'ZodError') {
+            return res.status(400).send({ errors: err.errors });
+        }
+        res.status(500).send({ error: err.message });
     }
 }
 
 module.exports = {
-    createUser,
-    signIn,
+    signUp,
+    logIn,
 };
