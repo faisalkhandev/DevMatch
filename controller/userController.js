@@ -1,6 +1,9 @@
 const bcrypt = require("bcrypt");
 const { userModel } = require("../model/user.model");
+const jwt = require("jsonwebtoken")
 const { z } = require("zod");
+const { JWT_SECRET } = require("../config/config");
+
 
 const signUpSchema = z.object({
     firstName: z.string().min(1, "First name is required"),
@@ -71,9 +74,19 @@ async function logIn(req, res) {
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
 
-        if (!isPasswordValid) { 
+        if (!isPasswordValid) {
             return res.status(401).send({ error: "Invalid email or password." });
         }
+
+        const token = jwt.sign({
+            id: user._id
+        }, JWT_SECRET, {
+            expiresIn: '1d'
+        })
+
+        res.cookie("token", token, {
+            maxAge: 24 * 60 * 60 * 1000, // 1 day in milliseconds
+        });
 
         res.status(200).send({ message: "Sign in successful", userDetail: user });
     } catch (err) {
