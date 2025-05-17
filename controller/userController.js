@@ -1,9 +1,8 @@
 const bcrypt = require("bcrypt");
 const { userModel } = require("../model/user.model");
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
 const { z } = require("zod");
 const { JWT_SECRET } = require("../config/config");
-
 
 const signUpSchema = z.object({
     firstName: z.string().min(1, "First name is required"),
@@ -18,7 +17,8 @@ const signUpSchema = z.object({
                 return /[A-Z]/.test(val) && /[0-9]/.test(val);
             },
             {
-                message: "Password must contain at least one uppercase letter and one number",
+                message:
+                    "Password must contain at least one uppercase letter and one number",
             }
         ),
 });
@@ -50,10 +50,9 @@ async function signUp(req, res) {
 
         await user.save();
 
-        res
-            .status(201)
-            .send({ message: "User created successfully!", userDetail: user });
-    } catch (err) {
+        res.status(201).send({ message: "User created successfully!", userDetail: user });
+    }
+    catch (err) {
         if (err.name === "ZodError") {
             return res.status(400).send({ errors: err.errors });
         }
@@ -78,18 +77,23 @@ async function logIn(req, res) {
             return res.status(401).send({ error: "Invalid email or password." });
         }
 
-        const token = jwt.sign({
-            id: user._id
-        }, JWT_SECRET, {
-            expiresIn: '1d'
-        })
+        const token = jwt.sign(
+            {
+                id: user._id,
+            },
+            JWT_SECRET,
+            {
+                expiresIn: "1d",
+            }
+        );
 
         res.cookie("token", token, {
             maxAge: 24 * 60 * 60 * 1000, // 1 day in milliseconds
         });
 
         res.status(200).send({ message: "Sign in successful", userDetail: user });
-    } catch (err) {
+    }
+    catch (err) {
         if (err.name === "ZodError") {
             return res.status(400).send({ errors: err.errors });
         }
@@ -97,7 +101,20 @@ async function logIn(req, res) {
     }
 }
 
+async function userProfile(req, res) {
+    const user = req.userId;
+
+    const userData = await userModel.findById(user)
+
+    res.json({
+        user: userData
+    })
+
+
+}
+
 module.exports = {
     signUp,
     logIn,
+    userProfile
 };
