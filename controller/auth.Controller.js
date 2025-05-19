@@ -1,10 +1,11 @@
 const bcrypt = require("bcrypt");
 const { userModel } = require("../model/user.model");
 const jwt = require("jsonwebtoken");
-const { z } = require("zod");
 const { JWT_SECRET } = require("../config/config");
-const { signUpSchema, logInSchema } = require("../validation/auth.Schema");
-
+const {
+    signUpSchema,
+    logInSchema,
+} = require("../validation/auth.Schema");
 
 
 async function signUp(req, res) {
@@ -29,9 +30,10 @@ async function signUp(req, res) {
 
         await user.save();
 
-        res.status(201).send({ message: "User created successfully!", userDetail: user });
-    }
-    catch (err) {
+        res
+            .status(201)
+            .send({ message: "User created successfully!", userDetail: user });
+    } catch (err) {
         if (err.name === "ZodError") {
             return res.status(400).send({ errors: err.errors });
         }
@@ -71,8 +73,7 @@ async function logIn(req, res) {
         });
 
         res.status(200).send({ message: "Sign in successful", userDetail: user });
-    }
-    catch (err) {
+    } catch (err) {
         if (err.name === "ZodError") {
             return res.status(400).send({ errors: err.errors });
         }
@@ -80,20 +81,9 @@ async function logIn(req, res) {
     }
 }
 
-async function userProfile(req, res) {
-    const user = req.userId;
-
-    const userData = await userModel.findById(user)
-
-    res.json({
-        user: userData
-    })
-
-
-}
 
 module.exports = {
     signUp,
     logIn,
-    userProfile
-};
+
+}
