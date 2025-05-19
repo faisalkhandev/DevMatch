@@ -3,30 +3,9 @@ const { userModel } = require("../model/user.model");
 const jwt = require("jsonwebtoken");
 const { z } = require("zod");
 const { JWT_SECRET } = require("../config/config");
+const { signUpSchema, logInSchema } = require("../validation/auth.Schema");
 
-const signUpSchema = z.object({
-    firstName: z.string().min(1, "First name is required"),
-    lastName: z.string().optional(),
-    emailId: z.string().trim().email("Invalid email address"),
-    password: z
-        .string()
-        .min(8, "Password must be at least 8 characters")
-        .refine(
-            (val) => {
-                // Here just an example: at least one uppercase, one number
-                return /[A-Z]/.test(val) && /[0-9]/.test(val);
-            },
-            {
-                message:
-                    "Password must contain at least one uppercase letter and one number",
-            }
-        ),
-});
 
-const logInSchema = z.object({
-    emailId: z.string().email("Invalid email address"),
-    password: z.string().min(1, "Password is required"),
-});
 
 async function signUp(req, res) {
     try {
