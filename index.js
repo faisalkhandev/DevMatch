@@ -4,7 +4,7 @@ const http = require("http");
 const connectDB = require("./db/db");
 const { profileRouter } = require("./routes/profileRoute");
 const { authRouter } = require("./routes/authRoute");
-const { connectionRouter } = require("./routes/connectionRoute");
+const { connectionRouter } = require("./routes/requestRoute");
 
 require("dotenv").config();
 const app = express();

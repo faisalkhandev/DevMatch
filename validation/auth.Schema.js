@@ -23,6 +23,7 @@ const logInSchema = z.object({
 const editUserProfileSchema = z.object({
     firstName: z.string().min(1, "First name is required").optional(),
     lastName: z.string().optional(),
+    emailId: z.string().email("Invalid email address").optional(),
     age: z.number().min(18, "Minimum age is 18").optional(),
     gender: z.enum(["male", "female", "other"]).optional(),
     photoUrl: z.string().url("Invalid URL").optional(),
