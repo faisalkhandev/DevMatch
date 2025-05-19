@@ -81,9 +81,27 @@ async function logIn(req, res) {
     }
 }
 
+async function logOut(req, res) {
+    try {
+
+        res.clearCookie("token")
+        res.status(200).send({ message: "Logged out successfully" });
+
+    }
+    catch (err) {
+        if (err.name === "ZodError") {
+            return res.status(400).send({ errors: err.errors });
+        }
+        res.status(500).send({ error: err.message });
+
+    }
+
+
+}
 
 module.exports = {
     signUp,
     logIn,
+    logOut
 
 }
