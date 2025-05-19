@@ -4,6 +4,7 @@ const http = require("http");
 const connectDB = require("./db/db");
 const { profileRouter } = require("./routes/profileRoute");
 const { authRouter } = require("./routes/authRoute");
+const { connectionRouter } = require("./routes/connectionRoute");
 
 require("dotenv").config();
 const app = express();
@@ -13,8 +14,9 @@ app.use(express.json());
 app.use(cookieParser());
 
 
-app.use("/api/v1/", profileRouter)
 app.use("/api/v1/", authRouter)
+app.use("/api/v1/", profileRouter)
+app.use("/api/v1", connectionRouter)
 
 
 connectDB()
