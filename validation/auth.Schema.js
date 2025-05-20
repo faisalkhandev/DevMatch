@@ -30,7 +30,7 @@ const editUserProfileSchema = z.object({
     about: z.string().optional(),
     skills: z.array(z.string()).optional(),
     isPremium: z.boolean().optional()
-});
+}).strict()
 
 module.exports = {
     signUpSchema,

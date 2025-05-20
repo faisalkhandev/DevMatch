@@ -19,7 +19,18 @@ async function userProfileEdit(req, res) {
     const userId = req.userId;
 
     try {
-        const validateData = editUserProfileSchema.parse(req.body);
+        const validateData = editUserProfileSchema.safeParse(req.body);
+
+        // it will stop if the user try to update not allowed/mention field.
+        if (!validateData.success) {
+
+            return res.status(400).json({
+                success: false,
+                message: "Validation failed",
+                errors: validateData.error.errors,
+            });
+
+        }
 
         const updateUser = await userModel.findByIdAndUpdate(userId,
             { $set: validateData },
