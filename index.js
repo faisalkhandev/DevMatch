@@ -13,6 +13,18 @@ const server = http.createServer(app)
 app.use(express.json());
 app.use(cookieParser());
 
+app.use((err, req, res, next) => {
+    if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+        return res.status(400).json({
+            success: false,
+            message: "Invalid JSON payload",
+            error: err.message,
+        });
+    }
+    next();
+});
+
+
 
 app.use("/api/v1/", authRouter)
 app.use("/api/v1/", profileRouter)
