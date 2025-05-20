@@ -32,8 +32,22 @@ const editUserProfileSchema = z.object({
     isPremium: z.boolean().optional()
 }).strict()
 
+const passwordSchema = z.object({
+    oldPassword: z.string().min(1, "Old password is required"),
+    newPassword: z
+        .string()
+        .min(8, "New password must be at least 8 characters")
+        .refine(
+            (val) => /[A-Z]/.test(val) && /[0-9]/.test(val),
+            {
+                message: "New password must contain at least one uppercase letter and one number",
+            }
+        ),
+}).strict();
+
 module.exports = {
     signUpSchema,
     logInSchema,
     editUserProfileSchema,
+    passwordSchema,
 };
