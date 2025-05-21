@@ -4,7 +4,7 @@ const http = require("http");
 const connectDB = require("./db/db");
 const { profileRouter } = require("./routes/profileRoute");
 const { authRouter } = require("./routes/authRoute");
-const { connectionRouter } = require("./routes/requestRoute");
+const { requestRouter } = require("./routes/requestRoute");
 
 require("dotenv").config();
 const app = express();
@@ -28,7 +28,7 @@ app.use((err, req, res, next) => {
 
 app.use("/api/v1/", authRouter)
 app.use("/api/v1/", profileRouter)
-app.use("/api/v1", connectionRouter)
+app.use("/api/v1/", requestRouter)
 
 
 connectDB()

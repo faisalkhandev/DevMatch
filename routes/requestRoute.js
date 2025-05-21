@@ -1,15 +1,12 @@
 const express = require("express");
 const { userAuth } = require("../middleware/userAuth.middleware");
-const { connection } = require("../controller/requests.Controller");
+const { requestSend } = require("../controller/request.Controller");
 
-const connectionRouter = express.Router();
+const requestRouter = express.Router();
 
-
-
-connectionRouter.get("/connection", userAuth, connection)
-
+requestRouter.get("/request/send/:status/:senderId", userAuth, requestSend)
 
 
 module.exports = {
-    connectionRouter
+    requestRouter
 }
