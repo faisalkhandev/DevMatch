@@ -40,10 +40,18 @@ async function requestSend(req, res) {
             })
         }
 
-        // Checking Existing reverse request(one user can send the request. the reciver can't send the request back.)
+        // Check if a connection request already exists in either direction
         const existingReverseRequest = await ConnectionRequest.findOne({
-            senderId: receiverId,
-            receiverId: senderId,
+            $or: [
+                {
+                    senderId: receiverId,
+                    receiverId: senderId,
+                },
+                {
+                    senderId,
+                    receiverId,
+                }
+            ]
         });
 
         if (existingReverseRequest) {
@@ -52,19 +60,6 @@ async function requestSend(req, res) {
             });
         }
 
-
-
-        // Can't send the request twice/2 times.
-        const existRequest = await ConnectionRequest.findOne({
-            senderId,
-            receiverId,
-        });
-
-        if (existRequest) {
-            res.status(400).json({
-                message: "Connection request already sent.",
-            });
-        }
         // create the request
         const connectionRequest = await new ConnectionRequest({
             senderId,
@@ -76,7 +71,7 @@ async function requestSend(req, res) {
         const requestData = await connectionRequest.save();
 
         res.status(200).json({
-            message: "the connection has been send successfully.",
+            message: senderId + " is " + status + " " + existReciver.firstName,
             requestData,
         });
     } catch (error) {
