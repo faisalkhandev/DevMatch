@@ -4,7 +4,7 @@ const { requestSend } = require("../controller/request.Controller");
 
 const requestRouter = express.Router();
 
-requestRouter.get("/request/send/:status/:receiverId", userAuth, requestSend)
+requestRouter.post("/request/send/:status/:receiverId", userAuth, requestSend)
 
 
 module.exports = {
