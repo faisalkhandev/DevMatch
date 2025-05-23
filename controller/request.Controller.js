@@ -81,6 +81,68 @@ async function requestSend(req, res) {
     }
 }
 
+async function requestAccept(req, res) {
+
+    try {
+
+        const receiverId = req.userId;
+        const { requestId, status } = req.params;
+
+
+        //checking if the requestId is valid
+        if (!mongoose.Types.ObjectId.isValid(requestId)) {
+            return res.status(400).json({
+                message: "The requestId is invalid."
+            })
+        }
+
+        //2 status will be allowed. accepted and ignored.
+        const allowedStatus = ["accepted", "ignored"]
+        if (!allowedStatus.includes(status)) {
+            return res.status(400).json({
+                message: "invalid status type" + status
+            })
+        }
+
+        //find whether the request is present in the DB
+        const request = await ConnectionRequest.findById(requestId)
+        if (!request) {
+            return res.json({
+                message: "Connection request not found."
+            })
+        }
+
+        // Only the receiver can respond
+        if (request.receiverId.toString() !== receiverId) {
+            return res.status(403).json({ message: "You are not authorized to respond to this request." });
+        }
+
+
+        //check if the request is already accepted or ignored. 
+        if (allowedStatus.includes(request.status)) {
+            return res.json({
+                message: "This request has already been responded."
+            })
+        }
+
+        request.status = status;
+        await request.save();
+
+        return res.status(200).json({
+            message: `Connection has been ${status}`,
+            response: request,
+        })
+
+
+    }
+    catch (error) {
+        res.json({
+            error: error.message,
+        });
+    }
+
+}
+
 module.exports = {
     requestSend,
 };
