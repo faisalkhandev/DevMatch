@@ -70,9 +70,14 @@ async function requestSend(req, res) {
         // save the data into the DB
         const requestData = await connectionRequest.save();
 
-        res.status(200).json({
-            message: senderId + " is " + status + " " + existReciver.firstName,
-            requestData,
+        await requestData.populate([
+            { path: 'senderId', select: 'firstName lastName' },
+            { path: 'receiverId', select: 'firstName lastName' }
+        ]);
+
+        return res.status(200).json({
+            message: `${requestData.senderId.firstName}  ${status} ${requestData.receiverId.firstName}`,
+            Data: requestData
         });
     } catch (error) {
         res.json({
@@ -81,12 +86,13 @@ async function requestSend(req, res) {
     }
 }
 
-async function requestAccept(req, res) {
+async function requestRespond(req, res) {
 
     try {
 
         const receiverId = req.userId;
         const { requestId, status } = req.params;
+
 
 
         //checking if the requestId is valid
@@ -96,8 +102,8 @@ async function requestAccept(req, res) {
             })
         }
 
-        //2 status will be allowed. accepted and ignored.
-        const allowedStatus = ["accepted", "ignored"]
+        //Two status will be allowed. Accepted and Ignored.
+        const allowedStatus = ["accepted", "rejected"]
         if (!allowedStatus.includes(status)) {
             return res.status(400).json({
                 message: "invalid status type" + status
@@ -106,6 +112,7 @@ async function requestAccept(req, res) {
 
         //find whether the request is present in the DB
         const request = await ConnectionRequest.findById(requestId)
+        console.log("requestID available::", request)
         if (!request) {
             return res.json({
                 message: "Connection request not found."
@@ -117,19 +124,33 @@ async function requestAccept(req, res) {
             return res.status(403).json({ message: "You are not authorized to respond to this request." });
         }
 
+        //if the status is ignored then it can't be accepted or rejected.
+        if (request.status === "ignored") {
+            return res.status(400).json({
+                message: "This request has already been ignored."
+            });
+        }
+
 
         //check if the request is already accepted or ignored. 
         if (allowedStatus.includes(request.status)) {
-            return res.json({
-                message: "This request has already been responded."
-            })
+            return res.status(400).json({
+                message: `This request has already been ${request.status} and cannot be changed.`
+            });
         }
 
         request.status = status;
         await request.save();
 
+        await request.populate([
+            { path: 'senderId', select: 'firstName lastName' },
+            { path: 'receiverId', select: 'firstName lastName' }
+        ]);
+
         return res.status(200).json({
             message: `Connection has been ${status}`,
+            senderName: request.senderId.firstName + " " + request.senderId.lastName,
+            receiverName: request.receiverId.firstName + " " + request.receiverId.lastName,
             response: request,
         })
 
@@ -145,4 +166,5 @@ async function requestAccept(req, res) {
 
 module.exports = {
     requestSend,
+    requestRespond
 };
