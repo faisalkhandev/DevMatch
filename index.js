@@ -5,6 +5,7 @@ const connectDB = require("./db/db");
 const { profileRouter } = require("./routes/profileRoute");
 const { authRouter } = require("./routes/authRoute");
 const { requestRouter } = require("./routes/requestRoute");
+const { userRouter } = require("./routes/userRoute");
 
 require("dotenv").config();
 const app = express();
@@ -29,6 +30,7 @@ app.use((err, req, res, next) => {
 app.use("/api/v1/", authRouter)
 app.use("/api/v1/", profileRouter)
 app.use("/api/v1/", requestRouter)
+app.use("/api/v1/", userRouter)
 
 
 connectDB()
