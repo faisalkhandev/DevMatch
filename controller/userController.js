@@ -112,7 +112,7 @@ async function userFeed(req, res) {
         if (potientalUsers.length === 0) {
             return res.status(200).json({
                 message: "No new users to show in feed.",
-                feed: [],
+                data: [],
             });
         }
 
@@ -120,7 +120,7 @@ async function userFeed(req, res) {
         return res.status(200).json({
             message: "Here are some new people for you to connect with.",
             count: potientalUsers.length,
-            feed: potientalUsers,
+            feedData: potientalUsers,
         });
     } catch (err) {
         return res.status(500).json({
