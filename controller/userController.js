@@ -1,22 +1,25 @@
 const { ConnectionRequest } = require("../model/connectionRequest.model");
 
+const USER_DATA = ["firstName", "lastName", "gender", "age", "photoUrl", "about", "skills"]
+
 async function userAllConnection(req, res) {
 
     try {
 
         const loggedInUser = req.userId;
 
-        const userPendingRequest = await ConnectionRequest.find({
+        const pendingRequest = await ConnectionRequest.find({
             receiverId: loggedInUser,
             status: 'interested'
         })
-            .populate('senderId', ["firstName", "lastName", "age", "photoUrl", "about", "skills"])
+            .populate('senderId', USER_DATA)
 
 
 
-        res.status(400).json({
+        return res.status(400).json({
             message: "All connections of the user",
-            userPendingRequest
+            pendingRequest,
+            count: pendingRequest.length
         })
 
     } catch (err) {
@@ -36,24 +39,36 @@ async function userAllFriends(req, res) {
 
         const allFriends = await ConnectionRequest.find({
             $or: [
-                {
-                    receiverId: loggedInUser, status: 'accepted'
-                },
-                {
-                    senderId: loggedInUser, status: "accepted"
-                }
+                { receiverId: loggedInUser, status: 'accepted' },
+                { senderId: loggedInUser, status: "accepted" }
             ]
         })
-            .populate("senderId", ["firstName", "lastName", "age", "photoUrl", "about", "skills"])
+            .populate("senderId", USER_DATA)
+            .populate("receiverId", USER_DATA);
+
+        // Extract the actual friends (not the logged-in user)
+        const friendsList = allFriends.map(connection => {
+            // If logged-in user is the sender, return the receiver as friend
+            if (connection.senderId._id.toString() === loggedInUser.toString()) {
+                return connection.receiverId;
+            }
+            // If logged-in user is the receiver, return the sender as friend
+            else {
+                return connection.senderId;
+            }
+        });
 
         return res.status(200).json({
             message: "All friends are here",
-            allFriends
-        })
-
+            friends: friendsList,
+            count: friendsList.length
+        });
 
     } catch (error) {
-        error: error.message
+        return res.status(400).json({
+            message: "Error fetching friends",
+            error: error.message
+        });
     }
 }
 
