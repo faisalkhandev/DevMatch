@@ -48,6 +48,7 @@ const userSchema = new mongoose.Schema(
                 values: ["male", "female", "other"],
                 message: `{VALUE} is not a valid gender type`,
             },
+            default: 'male',
         },
         isPremium: {
             type: Boolean,
