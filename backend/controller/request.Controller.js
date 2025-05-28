@@ -112,7 +112,7 @@ async function requestRespond(req, res) {
 
         //find whether the request is present in the DB
         const request = await ConnectionRequest.findById(requestId)
-        console.log("requestID available::", request)
+
         if (!request) {
             return res.json({
                 message: "Connection request not found."
