@@ -79,6 +79,15 @@ async function userFeed(req, res) {
     try {
         const userId = req.userId;
 
+        // pagination in GET APIs
+        // difference btw query(?limit) and params(/:limmit)
+        const page = parseInt(req.query.page) || 1;
+        let limit = parseInt(req.query.limit) || 10;
+        // if a user send limit 100k or more than this or to prevent DDoS attack or slow querying or high ram/cpu usage and high cost.
+        limit = limit > 50 ? 50 : limit;
+
+        const skip = (page - 1) * limit;
+
         // Get all requests where user is sender or receiver
         const connection = await ConnectionRequest.find({
             $or: [
@@ -103,24 +112,28 @@ async function userFeed(req, res) {
         hideFromFeed.add(userId);
 
         // Find users who has not interacted with me yet.
-        const potientalUsers = await userModel
+        const potentialUsers = await userModel
             .find({
                 _id: { $nin: Array.from(hideFromFeed) },
             })
-            .select(USER_DATA);
+            .select(USER_DATA)
+            .skip(skip)
+            .limit(limit)
 
-        if (potientalUsers.length === 0) {
+        if (potentialUsers.length === 0) {
             return res.status(200).json({
                 message: "No new users to show in feed.",
                 data: [],
             });
         }
 
-        // Find users not yet interacted with
+        // Find users who i have not interacted yet
         return res.status(200).json({
             message: "Here are some new people for you to connect with.",
-            count: potientalUsers.length,
-            feedData: potientalUsers,
+            count: potentialUsers.length,
+            currentPage: page,
+            hasMore: potentialUsers.length === limit,
+            feed: potentialUsers
         });
     } catch (err) {
         return res.status(500).json({
