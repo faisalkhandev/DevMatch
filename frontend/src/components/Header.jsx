@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { removeUser } from '../Store/slice/authSlice';
 import { showToast } from './ShowToast';
+import { BASE_URL } from '../utils/constant';
 
 const Header = () => {
     const user = useSelector((state) => state.user);
@@ -12,7 +13,7 @@ const Header = () => {
 
     async function handleLogout() {
         try {
-            await axios.post("http://localhost:4000/api/v1/logout", {
+            await axios.post(BASE_URL + "/api/v1/logout", {
                 withCredentials: true,
             });
             dispatch(removeUser());

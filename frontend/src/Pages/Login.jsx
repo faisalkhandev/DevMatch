@@ -4,6 +4,7 @@ import { useDispatch, } from "react-redux";
 import { addUser } from "../Store/slice/authSlice";
 import { useNavigate } from "react-router";
 import { showToast } from "../Components/ShowToast";
+import { BASE_URL } from "../utils/constant";
 
 const Login = () => {
     const [error, setError] = useState(null)
@@ -30,7 +31,7 @@ const Login = () => {
         console.log("Logging in with:", formData);
         try {
 
-            const res = await axios.post('http://localhost:4000/api/v1/login', formData, {
+            const res = await axios.post(BASE_URL + '/api/v1/login', formData, {
                 withCredentials: true,
             });
             dispatch(addUser(res?.data?.user))

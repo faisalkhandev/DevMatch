@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { BASE_URL } from "../utils/constant";
 
 const SignUp = () => {
     const [formData, setFormData] = useState({
@@ -24,7 +25,7 @@ const SignUp = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post("http://localhost:4000/api/v1/signup", formData);
+            await axios.post(BASE_URL + "/api/v1/signup", formData);
             setError("")
         } catch (err) {
 
