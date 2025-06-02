@@ -6,11 +6,13 @@ const { profileRouter } = require("./routes/profileRoute");
 const { authRouter } = require("./routes/authRoute");
 const { requestRouter } = require("./routes/requestRoute");
 const { userRouter } = require("./routes/userRoute");
+var cors = require('cors')
 
 require("dotenv").config();
 const app = express();
 const server = http.createServer(app)
 
+app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
