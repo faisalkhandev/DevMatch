@@ -3,12 +3,13 @@ import React, { useState } from "react";
 import axios from 'axios'
 
 const Login = () => {
-    const [formData, setFormData] = useState({
-        emailId: "faisal@gmail.com",
-        password: "Faisalkhan@12",
-    });
-
     const [error, setError] = useState(null)
+    const [user, setUser] = useState({});
+    console.log("userrrrrr:::::", user)
+    const [formData, setFormData] = useState({
+        emailId: "",
+        password: "",
+    });
 
     // Handle input changes
     function handleChange(e) {
@@ -24,11 +25,11 @@ const Login = () => {
         e.preventDefault();
         console.log("Logging in with:", formData);
         try {
-            await axios.post("http://localhost:4000/api/v1/login", {
-                emailId: formData.emailId,
-                password: formData.password
-            });
 
+            const res = await axios.post('http://localhost:4000/api/v1/login', formData, {
+                withCredentials: true,
+            });
+            setUser(res?.data?.user)
             setError("")
 
         } catch (err) {

@@ -24,12 +24,7 @@ const SignUp = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post("http://localhost:4000/api/v1/signup", {
-                firstName: formData.firstName,
-                lastName: formData.lastName,
-                emailId: formData.emailId,
-                password: formData.password
-            });
+            await axios.post("http://localhost:4000/api/v1/signup", formData);
             setError("")
         } catch (err) {
 
