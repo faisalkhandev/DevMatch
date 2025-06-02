@@ -1,15 +1,19 @@
 import React, { useState } from "react";
-
 import axios from 'axios'
+import { useDispatch, } from "react-redux";
+import { addUser } from "../Store/slice/authSlice";
+import { useNavigate } from "react-router";
+import { showToast } from "../Components/ShowToast";
 
 const Login = () => {
     const [error, setError] = useState(null)
-    const [user, setUser] = useState({});
-    console.log("userrrrrr:::::", user)
     const [formData, setFormData] = useState({
         emailId: "",
         password: "",
     });
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     // Handle input changes
     function handleChange(e) {
@@ -29,8 +33,10 @@ const Login = () => {
             const res = await axios.post('http://localhost:4000/api/v1/login', formData, {
                 withCredentials: true,
             });
-            setUser(res?.data?.user)
+            dispatch(addUser(res?.data?.user))
             setError("")
+            showToast("Login Successfully!", 'success')
+            navigate("/feed")
 
         } catch (err) {
             if (err.response) {
