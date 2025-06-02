@@ -1,6 +1,29 @@
-import React from 'react';
+import React, { useState } from "react";
 
 const SignUp = () => {
+    const [formData, setFormData] = useState({
+        firstName: "",
+        lastName: "",
+        emailId: "",
+        password: "",
+    });
+
+    // Update state on input change
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+
+    // Handle form submit
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log("Sign up data:", formData);
+    };
+
     return (
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -10,9 +33,12 @@ const SignUp = () => {
             </div>
 
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                <form action="#" method="POST" className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
-                        <label htmlFor="firstName" className="block text-sm font-medium text-white">
+                        <label
+                            htmlFor="firstName"
+                            className="block text-sm font-medium text-white"
+                        >
                             First Name
                         </label>
                         <div className="mt-2">
@@ -22,13 +48,18 @@ const SignUp = () => {
                                 type="text"
                                 required
                                 autoComplete="given-name"
+                                value={formData.firstName}
+                                onChange={handleChange}
                                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm"
                             />
                         </div>
                     </div>
 
                     <div>
-                        <label htmlFor="lastName" className="block text-sm font-medium text-white">
+                        <label
+                            htmlFor="lastName"
+                            className="block text-sm font-medium text-white"
+                        >
                             Last Name
                         </label>
                         <div className="mt-2">
@@ -38,29 +69,39 @@ const SignUp = () => {
                                 type="text"
                                 required
                                 autoComplete="family-name"
+                                value={formData.lastName}
+                                onChange={handleChange}
                                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm"
                             />
                         </div>
                     </div>
 
                     <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-white">
+                        <label
+                            htmlFor="emailId"
+                            className="block text-sm font-medium text-white"
+                        >
                             Email address
                         </label>
                         <div className="mt-2">
                             <input
-                                id="email"
-                                name="email"
+                                id="emailId"
+                                name="emailId"
                                 type="email"
                                 required
                                 autoComplete="email"
+                                value={formData.emailId}
+                                onChange={handleChange}
                                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm"
                             />
                         </div>
                     </div>
 
                     <div>
-                        <label htmlFor="password" className="block text-sm font-medium text-white">
+                        <label
+                            htmlFor="password"
+                            className="block text-sm font-medium text-white"
+                        >
                             Password
                         </label>
                         <div className="mt-2">
@@ -70,6 +111,8 @@ const SignUp = () => {
                                 type="password"
                                 required
                                 autoComplete="new-password"
+                                value={formData.password}
+                                onChange={handleChange}
                                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm"
                             />
                         </div>
@@ -87,8 +130,11 @@ const SignUp = () => {
 
                 {/* Login message */}
                 <div className="mt-6 text-center text-sm text-white">
-                    Already have an account?{' '}
-                    <a href="/login" className="font-semibold text-blue-500 hover:text-blue-600">
+                    Already have an account?{" "}
+                    <a
+                        href="/login"
+                        className="font-semibold text-blue-500 hover:text-blue-600"
+                    >
                         Log in
                     </a>
                 </div>
