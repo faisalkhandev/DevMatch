@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 
+import axios from 'axios'
+
 const Login = () => {
     const [formData, setFormData] = useState({
-        emailId: "",
-        password: "",
+        emailId: "faisal@gmail.com",
+        password: "Faisalkhan@12",
     });
+
+    const [error, setError] = useState(null)
 
     // Handle input changes
     function handleChange(e) {
@@ -15,13 +19,34 @@ const Login = () => {
         }));
     }
 
-
     // Handle form submit
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
         console.log("Logging in with:", formData);
-    }
+        try {
+            await axios.post("http://localhost:4000/api/v1/login", {
+                emailId: formData.emailId,
+                password: formData.password
+            });
 
+            setError("")
+
+        } catch (err) {
+            if (err.response) {
+                const data = err.response.data;
+
+                if (Array.isArray(data.errors) && data.errors.length > 0) {
+                    setError(data.errors[0].message);
+                } else if (data.error) {
+                    setError(data.error);
+                } else {
+                    setError("An unknown error occurred. Please try again.");
+                }
+            } else {
+                setError("An unknown error occurred. Please try again.");
+            }
+        }
+    }
     return (
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -72,6 +97,7 @@ const Login = () => {
                             />
                         </div>
                     </div>
+                    {error && <p className="text-red-500 text-[18px]">{error}</p>}
 
                     <div>
                         <button
