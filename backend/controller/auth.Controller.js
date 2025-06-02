@@ -72,7 +72,7 @@ async function logIn(req, res) {
             maxAge: 24 * 60 * 60 * 1000, // 1 day in milliseconds
         });
 
-        res.status(200).send({ message: "Sign in successful", userDetail: user });
+        res.status(200).send({ message: "Sign in successful", user });
     } catch (err) {
         if (err.name === "ZodError") {
             return res.status(400).send({ errors: err.errors });
