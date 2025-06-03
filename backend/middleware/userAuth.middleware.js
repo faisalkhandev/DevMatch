@@ -8,8 +8,8 @@ async function userAuth(req, res, next) {
 
     try {
         if (!token) {
-            res.status(400).json({
-                message: "invalid token in the cookies."
+            res.status(401).json({
+                message: "invalid token. Please login again."
             })
         }
 
