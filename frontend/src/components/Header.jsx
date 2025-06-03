@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 import { removeUser } from '../Store/slice/authSlice';
 import { showToast } from './ShowToast';
 import { BASE_URL } from '../utils/constant';
+import Cookies from 'js-cookie';
 
 const Header = () => {
     const user = useSelector((state) => state.user);
@@ -16,6 +17,7 @@ const Header = () => {
             await axios.post(BASE_URL + "/api/v1/logout", {
                 withCredentials: true,
             });
+            Cookies.remove('token');
             dispatch(removeUser());
             showToast("Logout Successfully!.", 'success')
             navigate("/login");
