@@ -3,14 +3,13 @@ import { Footer, Header } from '../Components'
 import axios from 'axios';
 import { BASE_URL } from '../utils/constant';
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addUser } from '../Store/slice/authSlice';
 import { showToast } from '../Components/ShowToast';
 
 const Body = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const userData = useSelector((state) => state.user);
 
     async function fetchUser() {
         try {
@@ -24,15 +23,13 @@ const Body = () => {
                 navigate('/login');
                 return;
             }
-            showToast('Failed to fetch user data. Please try login again.', 'error');
+            showToast('Something went wrong while fetching user data', 'error');
         }
 
     }
 
     useEffect(() => {
-        if (!userData) {
-            fetchUser();
-        }
+        fetchUser();
     }, [])
 
     return (
