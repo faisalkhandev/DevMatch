@@ -1,13 +1,13 @@
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { removeUser } from '../Store/slice/authSlice';
 import { showToast } from './ShowToast';
 import { BASE_URL } from '../utils/constant';
 import Cookies from 'js-cookie';
 
 const Header = () => {
-    const user = useSelector((state) => state.user);
+    const user = useSelector((state) => state.user.data);
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -40,7 +40,7 @@ const Header = () => {
     return (
         <div className="navbar bg-base-200 shadow-sm flex justify-around items-center">
             <div className="flex">
-                <a className="btn btn-ghost text-xl">Dev Match</a>
+                <Link to="/feed" className="btn btn-ghost text-xl">Dev Match</Link>
             </div>
             <div className="flex gap-2">
                 <div className="dropdown dropdown-end">
@@ -64,14 +64,12 @@ const Header = () => {
                         className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow"
                     >
                         <li>
-                            <a className="justify-between">
+                            <Link to="/profile" className="justify-between">
                                 Profile
                                 <span className="badge">New</span>
-                            </a>
+                            </Link>
                         </li>
-                        <li>
-                            <a>Settings</a>
-                        </li>
+
                         <li>
                             <a onClick={handleLogout}>Logout</a>
                         </li>

@@ -13,20 +13,20 @@ const Body = () => {
 
     async function fetchUser() {
         try {
-
             const res = await axios.get(BASE_URL + '/api/v1/profile/view', {
                 withCredentials: true
-            })
+            });
             dispatch(addUser(res.data.user));
         } catch (error) {
-            if (error.status === 401) {
+            if (error.response?.status === 401) {
+                showToast('Unauthorized. Please login.', 'warning');
                 navigate('/login');
                 return;
             }
             showToast('Something went wrong while fetching user data', 'error');
         }
-
     }
+
 
     useEffect(() => {
         fetchUser();

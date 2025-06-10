@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from 'axios'
 import { useDispatch, } from "react-redux";
 import { addUser } from "../Store/slice/authSlice";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { showToast } from "../Components/ShowToast";
 import { BASE_URL } from "../utils/constant";
 
@@ -35,6 +35,7 @@ const Login = () => {
                 withCredentials: true,
             });
             dispatch(addUser(res?.data?.user))
+            localStorage.setItem("token", res?.data?.token);
             setError("")
             showToast("Login Successfully!", 'success')
             navigate("/feed")
@@ -120,9 +121,9 @@ const Login = () => {
                 {/* Sign up message */}
                 <div className="mt-6 text-center text-sm text-white">
                     Don't have an account?{" "}
-                    <a href="/signup" className="font-semibold text-blue-500 hover:text-blue-600">
+                    <Link href="/signup" className="font-semibold text-blue-500 hover:text-blue-600">
                         Sign up
-                    </a>
+                    </Link>
                 </div>
             </div>
         </div>
