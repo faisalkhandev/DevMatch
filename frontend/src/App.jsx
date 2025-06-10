@@ -6,6 +6,7 @@ import Body from './Pages/Body';
 import { Provider } from 'react-redux'
 import appStore from './Store/store';
 import Toast from './Components/ShowToast';
+import PrivateRoute from './routes/PrivateRoute';
 
 function App() {
 
@@ -18,9 +19,24 @@ function App() {
             <Route path='/' element={<Body />}>
               <Route path='/signup' element={<SignUp />} />
               <Route path='/login' element={<Login />} />
-              <Route path='/profile' element={<Profile />} />
-              <Route path='/feed' element={<Feed />} />
+              <Route
+                path='/profile'
+                element={
+                  <PrivateRoute>
+                    <Profile />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path='/feed'
+                element={
+                  <PrivateRoute>
+                    <Feed />
+                  </PrivateRoute>
+                }
+              />
             </Route>
+
           </Routes>
         </BrowserRouter>
       </Provider>
