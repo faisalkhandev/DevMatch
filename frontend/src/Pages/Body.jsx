@@ -4,7 +4,7 @@ import axios from 'axios';
 import { BASE_URL } from '../utils/constant';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { addUser } from '../Store/slice/authSlice';
+import { addUser } from '../Store/Slice/authSlice';
 import { showToast } from '../Components/ShowToast';
 
 const Body = () => {

@@ -1,10 +1,11 @@
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router';
-import { removeUser } from '../Store/slice/authSlice';
+import { removeUser } from '../Store/Slice/authSlice';
 import { showToast } from './ShowToast';
 import { BASE_URL } from '../utils/constant';
 import Cookies from 'js-cookie';
+import { clearFeed } from '../Store/Slice/feedSLice';
 
 const Header = () => {
     const user = useSelector((state) => state.user.data);
@@ -19,6 +20,8 @@ const Header = () => {
             });
             Cookies.remove('token');
             dispatch(removeUser());
+            dispatch(clearFeed());
+            localStorage.removeItem("token");
             showToast("Logout Successfully!.", 'success')
             navigate("/login");
         } catch (err) {
