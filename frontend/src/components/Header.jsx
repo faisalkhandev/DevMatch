@@ -79,7 +79,7 @@ const Header = () => {
                         <li>
                             <Link to="/requests" className="justify-between">
                                 Requests
-                                <span className='badge badge-accent'>New</span>
+                                <span className='badge badge-accent p-1 flex justify-start'>new</span>
                             </Link>
                         </li>
 
