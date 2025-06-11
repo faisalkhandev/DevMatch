@@ -33,7 +33,7 @@ const Body = () => {
     }, [])
 
     return (
-        <div >
+        <div>
             <Header />
             <Outlet />
             <Footer />

@@ -1,18 +1,7 @@
 
-const Card = ({ data, loading }) => {
-    const { firstName, lastName, gender, about, photoUrl, skills, } = data;
+const Card = ({ data }) => {
 
 
-    if (loading) {
-        return (
-            <div className="flex w-52 flex-col gap-4">
-                <div className="skeleton h-32 w-full"></div>
-                <div className="skeleton h-4 w-28"></div>
-                <div className="skeleton h-4 w-full"></div>
-                <div className="skeleton h-4 w-full"></div>
-            </div>
-        );
-    }
 
     const badgeTypes = [
         "badge-primary",
@@ -31,7 +20,7 @@ const Card = ({ data, loading }) => {
         <div className="card bg-base-300 w-96 shadow-xl ">
             <figure>
                 <img
-                    src={photoUrl || "https://via.placeholder.com/150"}
+                    src={data?.photoUrl || "https://via.placeholder.com/150"}
                     alt="Profile Picture"
                     className="w-full h-80 object-cover object-[15%_30%]"
                 />
@@ -39,17 +28,17 @@ const Card = ({ data, loading }) => {
             </figure>
             <div className="card-body">
                 <h2 className="card-title">
-                    {firstName + " " + lastName}
+                    {data?.firstName + " " + data?.lastName}
                     <div
-                        className={`badge ${gender.toLowerCase() === "male"
+                        className={`badge ${data?.gender.toLowerCase() === "male"
                             ? "badge-primary"
                             : "badge-secondary"
                             }`}
                     >
-                        {gender.toUpperCase()}
+                        {data?.gender.toUpperCase()}
                     </div>
                 </h2>
-                <p>{about}</p>
+                <p>{data?.about}</p>
 
                 <div className="card-actions justify-center my-4">
                     <button className="btn bg-red-600 rounded-lg">
@@ -89,8 +78,8 @@ const Card = ({ data, loading }) => {
                 </div>
 
                 <div className="my-4">
-                    {skills && skills.length > 0 ? (
-                        skills.map((skill, index) => (
+                    {data?.skills && data?.skills.length > 0 ? (
+                        data?.skills.map((skill, index) => (
                             <span
                                 key={index}
                                 className={`badge badge-outline ${getSkillBadgeClass(index)} m-1`}
