@@ -1,7 +1,7 @@
 
 import './App.css'
 import { BrowserRouter, Route, Routes } from "react-router";
-import { Feed, Login, Profile, SignUp } from './Pages';
+import { Connections, Feed, Login, Profile, SignUp } from './Pages';
 import Body from './Pages/Body';
 import { Provider } from 'react-redux'
 import appStore from './Store/store';
@@ -35,6 +35,15 @@ function App() {
                   </PrivateRoute>
                 }
               />
+              <Route
+                path='/connections'
+                element={
+                  <PrivateRoute>
+                    <Connections />
+                  </PrivateRoute>
+                }
+              />
+
             </Route>
 
           </Routes>
