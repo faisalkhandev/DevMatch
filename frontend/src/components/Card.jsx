@@ -1,21 +1,15 @@
 
-import "./Card.css";
-
 const Card = ({ data, loading }) => {
     const { firstName, lastName, gender, about, photoUrl, skills } = data;
 
 
     if (loading) {
         return (
-            <div className="card bg-base-500 w-96 shadow-sm shimmer">
-                <div className="skeleton-card">
-                    <div className="skeleton-image"></div>
-                    <div className="skeleton-title"></div>
-                    <div className="skeleton-paragraph"></div>
-                    <div className="skeleton-paragraph"></div>
-                    <div className="skeleton-btn"></div>
-                    <div className="skeleton-btn"></div>
-                </div>
+            <div className="flex w-52 flex-col gap-4">
+                <div className="skeleton h-32 w-full"></div>
+                <div className="skeleton h-4 w-28"></div>
+                <div className="skeleton h-4 w-full"></div>
+                <div className="skeleton h-4 w-full"></div>
             </div>
         );
     }
@@ -34,7 +28,7 @@ const Card = ({ data, loading }) => {
     };
 
     return (
-        <div className="card bg-base-500 w-96 shadow-sm">
+        <div className="card bg-base-500 w-96 shadow-sm border-amber-400 border-2 ">
             <figure>
                 <img src={photoUrl || []} alt="Profile Picture" />
             </figure>
