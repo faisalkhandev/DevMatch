@@ -17,7 +17,7 @@ const Card = ({ data }) => {
     };
 
     return (
-        <div className="card bg-base-300 w-96 shadow-xl ">
+        <div className="card bg-base-300 w-96 shadow-xl border-4 border-amber-400">
             <figure>
                 <img
                     src={data?.photoUrl || "https://via.placeholder.com/150"}
