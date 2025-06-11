@@ -1,6 +1,6 @@
 
 const Card = ({ data, loading }) => {
-    const { firstName, lastName, gender, about, photoUrl, skills } = data;
+    const { firstName, lastName, gender, about, photoUrl, skills, } = data;
 
 
     if (loading) {
@@ -28,9 +28,14 @@ const Card = ({ data, loading }) => {
     };
 
     return (
-        <div className="card bg-base-500 w-96 shadow-sm border-amber-400 border-2 ">
+        <div className="card bg-base-300 w-96 shadow-xl ">
             <figure>
-                <img src={photoUrl || []} alt="Profile Picture" />
+                <img
+                    src={photoUrl || "https://via.placeholder.com/150"}
+                    alt="Profile Picture"
+                    className="w-full h-80 object-cover object-[15%_30%]"
+                />
+
             </figure>
             <div className="card-body">
                 <h2 className="card-title">
@@ -47,7 +52,7 @@ const Card = ({ data, loading }) => {
                 <p>{about}</p>
 
                 <div className="card-actions justify-center my-4">
-                    <button className="btn bg-red-600">
+                    <button className="btn bg-red-600 rounded-lg">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -64,7 +69,7 @@ const Card = ({ data, loading }) => {
                         </svg>
                         Ignore
                     </button>
-                    <button className="btn bg-green-600">
+                    <button className="btn bg-green-600 rounded-lg">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
