@@ -1,8 +1,13 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { BASE_URL } from "../utils/constant";
+import { showToast } from "../Components/ShowToast";
+import { useNavigate } from 'react-router';
 
 const SignUp = () => {
+
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
         firstName: "",
         lastName: "",
@@ -27,15 +32,20 @@ const SignUp = () => {
         try {
             await axios.post(BASE_URL + "/api/v1/signup", formData);
             setError("")
+            navigate("/login");
+            showToast("Account created successfully! Please log in.", 'success');
         } catch (err) {
 
             if (err.response) {
                 const data = err.response.data;
 
+
                 if (Array.isArray(data.errors) && data.errors.length > 0) {
                     setError(data.errors[0].message);
+                    showToast(data.errors[0].message, 'error');
                 } else if (data.error) {
                     setError(data.error);
+                    showToast(data.error, 'error');
                 } else {
                     setError("An unknown error occurred. Please try again.");
                 }

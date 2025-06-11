@@ -111,9 +111,10 @@ const Profile = () => {
                             className="w-24 h-24 rounded-full object-cover mx-auto mt-4"
                         />
                         <div>
-                            <h1 className="text-2xl font-bold text-white">
-                                {firstName + " " + lastName}
+                            <h1 className="text-2xl font-bold text-white mx-5">
+                                {(firstName + " " + lastName).toUpperCase()}
                             </h1>
+                            <h3 className="mx-5">{user?.emailId}</h3>
                         </div>
                     </div>
                     <button
@@ -248,7 +249,7 @@ const Profile = () => {
                                     ))}
                                 </>
                             ) : (
-                                skills.map((skill, index) => (
+                                skills?.map((skill, index) => (
                                     <span key={index} className="badge badge-accent m-1 space-x-4 text-white">
                                         {skill}
                                     </span>

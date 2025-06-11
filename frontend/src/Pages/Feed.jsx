@@ -15,10 +15,14 @@ const Feed = () => {
 
     useEffect(() => {
         async function fetchFeed() {
+            if (feed && feed.length > 0) {
+                return;
+            }
             try {
                 const response = await axios.get(BASE_URL + "/api/v1/user/feed", {
                     withCredentials: true
                 })
+                console.log("feed response::::", response);
                 dispatch(addFeedItems(response.data.feed));
 
             } catch (error) {
@@ -26,27 +30,18 @@ const Feed = () => {
             }
         }
         fetchFeed();
-    }, []);
+    }, [feed, dispatch]);
 
 
+    const firstFeedItem = feed && feed.length > 0 ? feed[0] : null;
     return (
-        <div>
 
-            <div className='flex flex-wrap justify-center gap-4 p-4 '>
-                {
-                    feed && feed.length > 0 ? (
-                        feed.map((data, index) => (
-                            <Card key={data?._id || index} data={data} loading={loading} />
-                        ))
-                    ) :
-                        <h1 className='text-2xl text-center'>No Feed Available</h1>
-                }
-
-
+        <>
+            <div className='flex flex-wrap justify-center gap-5'>
+                <Card data={firstFeedItem} loading={loading} />
             </div>
-
-        </div>
-    )
-}
+        </>
+    );
+};
 
 export default Feed
