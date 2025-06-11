@@ -52,7 +52,7 @@ const Header = () => {
                             <div
                                 tabIndex={0}
                                 role="button"
-                                className="btn btn-ghost btn-circle avatar"
+                                className="btn btn-ghost btn-circle avatar avatar-online"
                             >
                                 <div className="w-10 rounded-full">
                                     <img alt="User avatar" src={user.photoUrl} />

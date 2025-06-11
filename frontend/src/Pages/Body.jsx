@@ -33,7 +33,7 @@ const Body = () => {
     }, [])
 
     return (
-        <div>
+        <div className='bg-gray-900 h-screen'>
             <Header />
             <Outlet />
             <Footer />

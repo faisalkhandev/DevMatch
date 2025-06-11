@@ -43,7 +43,7 @@ async function userProfileEdit(req, res) {
         if (!updateUser) {
             return res.status(404).json({ success: false, message: "User not found" });
         }
-        res.status(300).json({
+        res.status(200).json({
             success: true,
             message: "User profile updated successfully",
             updateData: updateUser,

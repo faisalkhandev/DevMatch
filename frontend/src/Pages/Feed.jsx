@@ -32,7 +32,7 @@ const Feed = () => {
     return (
         <div>
 
-            <div className='flex flex-wrap justify-center gap-4 p-4'>
+            <div className='flex flex-wrap justify-center gap-4 p-4 '>
                 {
                     feed && feed.length > 0 ? (
                         feed.map((data, index) => (
