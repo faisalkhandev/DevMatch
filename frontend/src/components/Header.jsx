@@ -72,8 +72,14 @@ const Header = () => {
                             </Link>
                         </li>
                         <li>
-                            <Link to="/connections" className="justify-between">
+                            <Link to="/friends" className="justify-between">
                                 Friends
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/requests" className="justify-between">
+                                Requests
+                                <span className='badge badge-accent'>New</span>
                             </Link>
                         </li>
 

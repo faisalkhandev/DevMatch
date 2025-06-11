@@ -1,7 +1,7 @@
 
 import './App.css'
 import { BrowserRouter, Route, Routes } from "react-router";
-import { Connections, Feed, Login, Profile, SignUp } from './Pages';
+import { Connections, Feed, Login, Profile, Requests, SignUp } from './Pages';
 import Body from './Pages/Body';
 import { Provider } from 'react-redux'
 import appStore from './Store/store';
@@ -36,10 +36,18 @@ function App() {
                 }
               />
               <Route
-                path='/connections'
+                path='/friends'
                 element={
                   <PrivateRoute>
                     <Connections />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path='/requests'
+                element={
+                  <PrivateRoute>
+                    <Requests />
                   </PrivateRoute>
                 }
               />
