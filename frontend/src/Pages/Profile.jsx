@@ -55,6 +55,7 @@ const Profile = () => {
             const updatedData = {
                 ...formData,
                 photoUrl: formData.photoUrl || photoUrl,
+                age: formData.age ? Number(formData.age) : undefined,
             };
 
             await axios.patch(BASE_URL + "/api/v1/profile/edit", updatedData, {
@@ -68,10 +69,22 @@ const Profile = () => {
             setEditMode(false);
         } catch (error) {
             console.error("Error updating profile:", error);
+
             if (error.response && error.response.data) {
-                showToast(error.response.data.error || "An error occurred", "error");
+                const { errors, message } = error.response.data;
+
+                if (Array.isArray(errors)) {
+                    errors.forEach(err => {
+                        showToast(err.message, "error");
+                    });
+                } else {
+                    showToast(message || "An error occurred", "error");
+                }
+            } else {
+                showToast("Something went wrong", "error");
             }
         }
+
     };
 
     const fetchProfileData = async () => {
