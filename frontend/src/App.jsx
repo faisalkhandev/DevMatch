@@ -5,8 +5,8 @@ import { Connections, Feed, Login, Profile, Requests, SignUp } from './Pages';
 import Body from './Pages/Body';
 import { Provider } from 'react-redux'
 import appStore from './Store/store';
-import Toast from './Components/ShowToast';
 import PrivateRoute from './routes/PrivateRoute';
+import Toast from './Components/ShowToast.jsx';
 
 function App() {
 
