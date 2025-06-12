@@ -1,9 +1,11 @@
 const mongoose = require("mongoose");
 const { DB_CONNECTION_SECRET } = require("../config/config");
+require("dotenv").config();
 
 async function connectDB() {
     try {
         await mongoose.connect(DB_CONNECTION_SECRET);
+        console.log("DB ENV:::", DB_CONNECTION_SECRET)
         console.log("MongoDB connected successfully!");
     } catch (error) {
         console.error("MongoDB connection error:", error);
