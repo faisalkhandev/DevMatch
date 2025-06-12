@@ -68,7 +68,7 @@ const Header = () => {
                 </Link>
 
                 {<>
-                    <span>{(user?.firstName + " " + user?.lastName).toUpperCase()}</span>
+                    <span>{user && (user?.firstName || "" + " " + user?.lastName || "").toUpperCase()}</span>
                 </>
                 }
                 {/* User Dropdown */}
