@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { showToast } from '../Components/ToastHelper.js';
+import { showToast } from '../components/ToastHelper.js';
 import { BASE_URL } from '../utils/constant';
 import axios from 'axios';
 import { addConnections } from '../Store/slice/connectionSlice.js';
-import Friends from '../Components/Friends';
+import Friends from '../components/Friends';
 
 const Connections = () => {
     const dispatch = useDispatch();

@@ -1,11 +1,11 @@
 import { Outlet, useNavigate } from 'react-router'
-import { Footer, Header } from '../Components'
+import { Footer, Header } from '../components'
 import axios from 'axios';
 import { BASE_URL } from '../utils/constant';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { addUser } from '../Store/slice/authSlice.js';
-import { showToast } from '../Components/ToastHelper.js';
+import { showToast } from '../components/ToastHelper.js';
 
 const Body = () => {
     const dispatch = useDispatch();

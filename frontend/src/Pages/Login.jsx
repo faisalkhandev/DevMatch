@@ -4,7 +4,7 @@ import { useDispatch, } from "react-redux";
 import { addUser } from "../Store/slice/authSlice.js";
 import { Link, useNavigate } from "react-router";
 import { BASE_URL } from "../utils/constant";
-import { showToast } from "../Components/ToastHelper.js";
+import { showToast } from "../components/ToastHelper.js";
 
 const Login = () => {
     const [error, setError] = useState(null)

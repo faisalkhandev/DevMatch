@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { BASE_URL } from "../utils/constant";
-import { showToast } from "../Components/ToastHelper.js";
+import { showToast } from "../components/ToastHelper.js";
 import { addUser } from "../Store/slice/authSlice.js";
 
 const Profile = () => {
