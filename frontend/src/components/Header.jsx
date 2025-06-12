@@ -67,6 +67,10 @@ const Header = () => {
                     </div>
                 </Link>
 
+                {<>
+                    <span>{(user?.firstName + " " + user?.lastName).toUpperCase()}</span>
+                </>
+                }
                 {/* User Dropdown */}
                 {user?.photoUrl && (
                     <div className="dropdown dropdown-end">
@@ -80,6 +84,7 @@ const Header = () => {
                             tabIndex={0}
                             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
                         >
+
                             <li>
                                 <Link to="/profile" className="justify-between">
                                     Profile
