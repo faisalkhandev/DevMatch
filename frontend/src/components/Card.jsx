@@ -1,6 +1,28 @@
+import axios from 'axios'
+import { BASE_URL } from '../utils/constant';
+import { showToast } from './ShowToast';
+import { useDispatch } from 'react-redux';
+import { removeFeedItem } from '../Store/Slice/feedSLice';
 
 const Card = ({ data }) => {
+    const dispatch = useDispatch();
 
+    async function handleSendRequest(status, reqId) {
+        try {
+            const response = await axios.post(BASE_URL + `/api/v1/request/send/${status}/${reqId}`, {}
+                , {
+                    withCredentials: true,
+                });
+            console.log(response);
+            dispatch(removeFeedItem(reqId))
+            showToast(response.data.message, "success");
+
+        } catch (error) {
+            console.log("errrorSend::", error)
+            showToast(error.response.data.message, "error");
+        }
+
+    }
 
 
     const badgeTypes = [
@@ -41,7 +63,7 @@ const Card = ({ data }) => {
                 <p>{data?.about}</p>
 
                 <div className="card-actions justify-center my-4">
-                    <button className="btn bg-red-600 rounded-lg">
+                    <button className="btn bg-red-600 rounded-lg" onClick={() => handleSendRequest("ignored", data?._id)}>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -58,7 +80,7 @@ const Card = ({ data }) => {
                         </svg>
                         Ignore
                     </button>
-                    <button className="btn bg-green-600 rounded-lg">
+                    <button className="btn bg-green-600 rounded-lg" onClick={() => handleSendRequest("interested", data?._id)}>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
