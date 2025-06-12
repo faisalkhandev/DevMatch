@@ -7,7 +7,7 @@ import { Provider } from 'react-redux'
 import appStore from './Store/store';
 import PrivateRoute from './routes/PrivateRoute';
 import 'react-toastify/dist/ReactToastify.css';
-import Toast from './Components/Toast';
+import Toast from './components/Toast';
 function App() {
 
   return (
