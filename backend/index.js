@@ -38,10 +38,11 @@ app.use("/api/v1/", profileRouter)
 app.use("/api/v1/", requestRouter)
 app.use("/api/v1/", userRouter)
 
+// process.env.PORT ||
 
 connectDB()
     .then(() => {
-        server.listen(process.env.PORT, () => {
+        server.listen(4000, () => {
             console.log(`Server is successfully listening on port ${process.env.PORT}...`);
         });
     })
