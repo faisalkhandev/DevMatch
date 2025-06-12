@@ -41,7 +41,7 @@ app.use("/api/v1/", userRouter)
 
 connectDB()
     .then(() => {
-        server.listen(process.env.PORT, () => {
+        server.listen(process.env.PORT || 4000, () => {
             console.log(`Server is successfully listening on port ${process.env.PORT}...`);
         });
     })
