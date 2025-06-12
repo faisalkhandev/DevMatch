@@ -3,7 +3,7 @@ import axios from 'axios';
 import { BASE_URL } from '../utils/constant';
 import { addRequests, removeRequest } from '../Store/Slice/requestSlice';
 import { useEffect } from 'react';
-import { showToast } from '../Components/ShowToast';
+import { showToast } from '../Components/Toast';
 import { useNavigate } from 'react-router';
 
 const Requests = () => {

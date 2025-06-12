@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Card from '../Components/Card';
-import { showToast } from './../Components/ShowToast';
+import { showToast } from '../Components/Toast';
 import axios from 'axios';
 import { BASE_URL } from './../utils/constant';
 import { addFeedItems } from '../Store/Slice/feedSLice';

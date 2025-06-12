@@ -1,12 +1,13 @@
 
 import './App.css'
 import { BrowserRouter, Route, Routes } from "react-router";
-import { Connections, Feed, Login, Profile, Requests, SignUp, Toast } from './Pages';
+import { Connections, Feed, Login, Profile, Requests, SignUp } from './Pages';
 import Body from './Pages/Body';
 import { Provider } from 'react-redux'
 import appStore from './Store/store';
 import PrivateRoute from './routes/PrivateRoute';
 import 'react-toastify/dist/ReactToastify.css';
+import { Toast } from './Components';
 function App() {
 
   return (

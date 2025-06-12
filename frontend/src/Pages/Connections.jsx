@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { showToast } from '../Components/ShowToast';
+import { showToast } from '../Components/Toast';
 import { BASE_URL } from '../utils/constant';
 import axios from 'axios';
 import { addConnections } from '../Store/Slice/connectionSlice';

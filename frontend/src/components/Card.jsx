@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { BASE_URL } from '../utils/constant';
-import { showToast } from './ShowToast';
+import { showToast } from './Toast';
 import { useDispatch } from 'react-redux';
 import { removeFeedItem } from '../Store/Slice/feedSLice';
 

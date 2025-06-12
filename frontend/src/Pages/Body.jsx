@@ -5,7 +5,7 @@ import { BASE_URL } from '../utils/constant';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { addUser } from '../Store/Slice/authSlice';
-import { showToast } from '../Components/ShowToast';
+import { showToast } from '../Components/Toast';
 
 const Body = () => {
     const dispatch = useDispatch();
