@@ -2,7 +2,7 @@ import axios from 'axios'
 import { BASE_URL } from '../utils/constant';
 import { showToast } from './ToastHelper.js';
 import { useDispatch } from 'react-redux';
-import { removeFeedItem } from '../Store/Slice/feedSLice';
+import { removeFeedItem } from '../Store/slice/feedSLice.js';
 
 const Card = ({ data }) => {
     const dispatch = useDispatch();

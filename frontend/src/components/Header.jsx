@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeUser } from '../Store/Slice/authSlice';
+import { removeUser } from '../Store/slice/authSlice.js';
 import { showToast } from './ToastHelper.js';
 import { BASE_URL } from '../utils/constant';
 import Cookies from 'js-cookie';
-import { clearFeed } from '../Store/Slice/feedSLice';
+import { clearFeed } from '../Store/slice/feedSLice.js';
 import { Link, useNavigate } from 'react-router';
 
 const Header = () => {

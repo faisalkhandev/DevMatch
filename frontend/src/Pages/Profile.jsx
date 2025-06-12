@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { BASE_URL } from "../utils/constant";
 import { showToast } from "../Components/ToastHelper.js";
-import { addUser } from "../Store/Slice/authSlice";
+import { addUser } from "../Store/slice/authSlice.js";
 
 const Profile = () => {
     const user = useSelector((state) => state.user.data);

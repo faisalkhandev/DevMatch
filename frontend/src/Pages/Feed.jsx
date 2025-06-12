@@ -4,7 +4,7 @@ import Card from '../Components/Card';
 import { showToast } from '../Components/ToastHelper.js';
 import axios from 'axios';
 import { BASE_URL } from './../utils/constant';
-import { addFeedItems } from '../Store/Slice/feedSLice';
+import { addFeedItems } from '../Store/slice/feedSLice.js';
 
 const Feed = () => {
     const dispatch = useDispatch();

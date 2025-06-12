@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { BASE_URL } from '../utils/constant';
-import { addRequests, removeRequest } from '../Store/Slice/requestSlice';
+import { addRequests, removeRequest } from '../Store/slice/requestSlice.js';
 import { useEffect } from 'react';
 import { showToast } from '../Components/ToastHelper.js';
 import { useNavigate } from 'react-router';
