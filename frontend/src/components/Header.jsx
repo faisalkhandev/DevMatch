@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeUser } from '../Store/Slice/authSlice';
-import { showToast } from './Toast';
+import { showToast } from './ToastHelper.js';
 import { BASE_URL } from '../utils/constant';
 import Cookies from 'js-cookie';
 import { clearFeed } from '../Store/Slice/feedSLice';

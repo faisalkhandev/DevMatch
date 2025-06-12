@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { BASE_URL } from "../utils/constant";
-import { showToast } from "../Components/Toast";
+import { showToast } from "../Components/ToastHelper.js";
 import { useNavigate } from 'react-router';
 
 const SignUp = () => {

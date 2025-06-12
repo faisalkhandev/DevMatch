@@ -3,8 +3,8 @@ import axios from 'axios'
 import { useDispatch, } from "react-redux";
 import { addUser } from "../Store/Slice/authSlice";
 import { Link, useNavigate } from "react-router";
-import { showToast } from "../Components/Toast";
 import { BASE_URL } from "../utils/constant";
+import { showToast } from "../Components/ToastHelper.js";
 
 const Login = () => {
     const [error, setError] = useState(null)
