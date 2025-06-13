@@ -6,6 +6,7 @@ const {
     signUpSchema,
     logInSchema,
 } = require("../validation/auth.Schema");
+const secr3et = "mySuperSecretKey";
 
 
 async function signUp(req, res) {
