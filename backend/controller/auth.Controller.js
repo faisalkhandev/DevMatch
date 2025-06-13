@@ -62,7 +62,7 @@ async function logIn(req, res) {
             {
                 id: user._id,
             },
-            JWT_SECRET,
+            secr3et,
             {
                 expiresIn: "1d",
             }
