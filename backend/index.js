@@ -13,7 +13,7 @@ const app = express();
 const server = http.createServer(app)
 
 const corsOptions = {
-    origin: 'http://localhost:5000',
+    origin: 'http://65.2.121.251',
     credentials: true,               // Allow cookies to be sent
 };
 app.use(cors(corsOptions));
