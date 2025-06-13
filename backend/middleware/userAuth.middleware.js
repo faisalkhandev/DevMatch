@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../config/config");
+const secret = "mySuperSecretKey";
+
 
 async function userAuth(req, res, next) {
     const { token } = req.cookies;
@@ -11,7 +13,7 @@ async function userAuth(req, res, next) {
             });
         }
 
-        const verifyToken = await jwt.verify(token, JWT_SECRET);
+        const verifyToken = await jwt.verify(token, secret);
 
         if (verifyToken) {
             req.userId = verifyToken.id;
