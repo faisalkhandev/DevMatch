@@ -13,3 +13,6 @@ Database: MongoDB
 Authentication: JWT
 
 Styling: DaisyUI (Tailwind plugin)
+
+you get an email when send the request using Amazon SES(simple amazon service).
+![image](https://github.com/user-attachments/assets/df54017e-fa85-42b7-927d-1945c07ab20d)
