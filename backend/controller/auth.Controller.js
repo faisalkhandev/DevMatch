@@ -1,12 +1,10 @@
 const bcrypt = require("bcrypt");
 const { userModel } = require("../model/user.model");
 const jwt = require("jsonwebtoken");
-const { JWT_SECRET } = require("../config/config");
 const {
     signUpSchema,
     logInSchema,
 } = require("../validation/auth.Schema");
-const secr3et = "mySuperSecretKey";
 
 
 async function signUp(req, res) {
@@ -63,7 +61,7 @@ async function logIn(req, res) {
             {
                 id: user._id,
             },
-            secr3et,
+            process.env.JWT_SECRET,
             {
                 expiresIn: "1d",
             }
