@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { DB_CONNECTION_SECRET } = require("../config/config");
 require("dotenv").config();
 
 async function connectDB() {
