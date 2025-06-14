@@ -2,10 +2,10 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeUser } from '../Store/slice/authSlice.js';
 import { showToast } from './ToastHelper.js';
-import { BASE_URL } from '../utils/constant';
 import Cookies from 'js-cookie';
 import { clearFeed } from '../Store/slice/feedSLice.js';
 import { Link, useNavigate } from 'react-router';
+import { BASE_URL } from '../utils/constant.js';
 
 const Header = () => {
     const user = useSelector((state) => state.user.data);

@@ -12,7 +12,6 @@ const Connections = () => {
     const connection = useSelector((state) => state.connections?.data);
 
     async function fetchConnections() {
-        if (connection && connection.length > 0) return;
         try {
             const response = await axios.get(BASE_URL + "/api/v1/user/connections", {
                 withCredentials: true
@@ -26,8 +25,9 @@ const Connections = () => {
     }
 
     useEffect(() => {
+        if (connection && connection.length > 0) return;
         fetchConnections();
-    });
+    }, []);
 
     if (!connection) return <h1>Loading...</h1>;
 

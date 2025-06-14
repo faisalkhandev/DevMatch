@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const { ConnectionRequest } = require("../model/connectionRequest.model");
 const { userModel } = require("../model/user.model");
+const { sendTemplatedEmail } = require("../config/sendEmail");
 
 async function requestSend(req, res) {
     try {
@@ -54,6 +55,9 @@ async function requestSend(req, res) {
             ]
         });
 
+
+
+
         if (existingReverseRequest) {
             return res.status(409).json({
                 message: "This user has already sent you a connection request. Please respond to it first.",
@@ -74,6 +78,20 @@ async function requestSend(req, res) {
             { path: 'senderId', select: 'firstName lastName' },
             { path: 'receiverId', select: 'firstName lastName' }
         ]);
+
+
+        //sending email(Amazon SES)
+        const emailRes = await sendTemplatedEmail({
+            to: "khanfai900@gmail.com",
+            from: "contact@devmatching.faisalkhandev.com",
+            senderName: requestData.senderId.firstName,
+            receiverName: requestData.receiverId.firstName,
+            status: requestData.status,
+        });
+        console.log("Email sent:", emailRes);
+
+
+
 
         return res.status(200).json({
             message: `${requestData.senderId.firstName}  ${status} ${requestData.receiverId.firstName}`,
