@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { ConnectionRequest } = require("../model/connectionRequest.model");
 const { userModel } = require("../model/user.model");
-const { sendTemplatedEmail } = require("../config/sendEmail");
+const { sendTemplatedEmail } = require("../utils/sendEmail");
 
 async function requestSend(req, res) {
     try {
