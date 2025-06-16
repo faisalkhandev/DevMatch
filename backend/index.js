@@ -14,7 +14,6 @@ const app = express();
 const server = http.createServer(app)
 
 const allowedOrigins = process.env.CLIENT_ORIGINS.split(",");
-console.log(process.env.CLIENT_ORIGINS)
 
 const corsOptions = {
     origin: function (origin, callback) {

@@ -3,7 +3,7 @@ const { subDays, startOfDay, endOfDay } = require("date-fns");
 const { ConnectionRequest } = require("../model/connectionRequest.model");
 const { sendTemplatedEmail } = require("./sendEmail");
 
-cron.schedule("0 16 * * *", async () => {
+cron.schedule("0 10 * * *", async () => {
     const yesterday = subDays(new Date(), 1);
     const startOfYesterday = startOfDay(yesterday);
     const endOfYesterday = endOfDay(yesterday);
@@ -25,28 +25,38 @@ cron.schedule("0 16 * * *", async () => {
             interestedRequestsFromYesterday.length
         );
 
-        for (const request of interestedRequestsFromYesterday) {
-            const receiverEmail = request.receiverId?.emailId;
-            const senderName = `${request.senderId?.firstName} ${request.senderId?.lastName}`;
-            const receiverName = `${request.receiverId?.firstName} ${request.receiverId?.lastName}`;
+        // Track unique receiver emails to avoid duplicates
+        const sentEmails = new Set();
 
-            if (!receiverEmail) continue;
+        for (const req of interestedRequestsFromYesterday) {
+            const receiverEmail = req.receiverId?.emailId;
+            const senderName = `${req.senderId?.firstName} ${req.senderId?.lastName}`;
+            const receiverName = `${req.receiverId?.firstName} ${req.receiverId?.lastName}`;
+            const status = req.status;
+
+            // Skip if already sent to this receiver
+            if (!receiverEmail || sentEmails.has(receiverEmail)) continue;
+            sentEmails.add(receiverEmail);
+
+            // AWS SES is currently in Sandbox mode, so emails can only be sent to addresses that have been verified in SES.
+            // you have to request for the production Access then i can be able to send the email to anyone. 
 
             try {
                 await sendTemplatedEmail({
-                    to: receiverEmail,
-                    from: 'khanfai900@gmail.com',
+                    to: 'khanfai900@gmail.com',
+                    from: 'contact@devmatching.faisalkhandev.com',
                     senderName,
                     receiverName,
-                    status: request.status,
+                    status,
                 });
 
-                console.log(`Email sent to ${receiverEmail}`);
+                console.log(`✅ Email sent to ${receiverEmail}`);
             } catch (err) {
-                console.error(`Failed to send email to ${receiverEmail}:`, err.message);
+                console.error(`❌ Failed to send email to ${receiverEmail}:`, err.message);
             }
         }
+
     } catch (error) {
-        console.log("Error in scheduled task:", error);
+        console.error("🔥 Error in scheduled task:", error);
     }
 });
