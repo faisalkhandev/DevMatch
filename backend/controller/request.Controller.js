@@ -80,15 +80,17 @@ async function requestSend(req, res) {
         ]);
 
 
-        //sending email(Amazon SES)
-        const emailRes = await sendTemplatedEmail({
-            to: "khanfai900@gmail.com",
-            from: "contact@devmatching.faisalkhandev.com",
-            senderName: requestData.senderId.firstName,
-            receiverName: requestData.receiverId.firstName,
-            status: requestData.status,
-        });
-        console.log("Email sent:", emailRes);
+        //when a user send a request then the reciever get an aler email(friend request email)(Amazon SES)
+
+        // this is in SandBox mode so only aws SES verified email can work only. 
+        // const emailRes = await sendTemplatedEmail({
+        //     to: "khanfai900@gmail.com",
+        //     from: "contact@devmatching.faisalkhandev.com",
+        //     senderName: requestData.senderId.firstName,
+        //     receiverName: requestData.receiverId.firstName,
+        //     status: requestData.status,
+        // });
+        // console.log("Email sent:", emailRes);
 
 
 
