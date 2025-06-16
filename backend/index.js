@@ -8,6 +8,7 @@ const { requestRouter } = require("./routes/requestRoute");
 const { userRouter } = require("./routes/userRoute");
 var cors = require('cors')
 require("dotenv").config();
+require("./utils/cronJob")
 
 const app = express();
 const server = http.createServer(app)
