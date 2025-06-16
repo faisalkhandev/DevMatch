@@ -8,6 +8,7 @@ import appStore from './Store/store';
 import PrivateRoute from './routes/PrivateRoute';
 import 'react-toastify/dist/ReactToastify.css';
 import Toast from './components/Toast';
+import Chat from './Pages/Chat';
 function App() {
 
   return (
@@ -48,6 +49,14 @@ function App() {
                 element={
                   <PrivateRoute>
                     <Requests />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path='/chat/:userId'
+                element={
+                  <PrivateRoute>
+                    <Chat />
                   </PrivateRoute>
                 }
               />
