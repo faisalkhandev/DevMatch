@@ -2,8 +2,11 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router'
 import { createSocketConnection } from '../utils/socket';
 import { useSelector } from 'react-redux';
+import { useState } from 'react';
+import { useRef } from 'react';
 
 const Chat = () => {
+
 
     const { targetUserId } = useParams();
     const user = useSelector((user) => user?.user?.data)
@@ -11,13 +14,26 @@ const Chat = () => {
     const firstName = user?.firstName;
     const lastName = user?.lastName;
 
+    const [newMessage, setNewMessage] = useState("");
+    const [messages, setMessages] = useState([]);
+
+    const chatContainerRef = useRef();
+
+    useEffect(() => {
+        if (chatContainerRef.current) {
+            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        }
+    }, [messages]);
 
     useEffect(() => {
         if (!userId) return;
 
         const socket = createSocketConnection();
-        socket.emit("joinChat", { firstName, lastName, userId, targetUserId })
+        socket.emit("joinChat", { firstName, lastName, senderId: userId, receiverId: targetUserId })
 
+        socket.on("receiveMessage", ({ text, time, firstName, senderId, receiverId }) => {
+            setMessages((prevMessages) => [...prevMessages, { text, time, firstName, senderId, receiverId }]);
+        })
 
         return () => {
             socket.disconnect();
@@ -25,27 +41,25 @@ const Chat = () => {
     }, [userId, targetUserId])
 
 
-    const messages = [
-        {
-            id: 1,
-            name: "Obi-Wan Kenobi",
-            time: "12:45",
-            avatar: "https://img.daisyui.com/images/profile/demo/kenobee@192.webp",
-            text: "You were the Chosen One!",
-            position: "start",
-            footer: "Delivered",
-        },
-        {
-            id: 2,
-            name: "Anakin",
-            time: "12:46",
-            avatar: "https://img.daisyui.com/images/profile/demo/anakeen@192.webp",
-            text: "I hate you!",
-            position: "end",
-            footer: "Seen at 12:46",
-        },
+    function handleMessage() {
+        const socket = createSocketConnection();
+        if (!newMessage.trim()) return;
 
-    ];
+
+        const msg = {
+            senderId: userId,
+            receiverId: targetUserId,
+            firstName,
+            text: newMessage,
+            time: new Date().toLocaleTimeString(),
+        };
+
+        // Emit to socket here
+        socket.emit("sendMessage", msg);
+
+        setNewMessage("");
+    }
+
 
     return (
         <div className='flex justify-center items-center mt-10'>
@@ -55,17 +69,30 @@ const Chat = () => {
                     Chat with {targetUserId}
                 </div>
 
-                <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                    {messages.map((msg) => (
-                        <div key={msg.id} className={`chat chat-${msg.position}`}>
+                <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 space-y-4">
 
-                            <div className="chat-header">
-                                {msg.name}
+                    {messages.map((msg, index) => {
+                        const isSender = msg.senderId === userId;
+                        const position = isSender ? "chat-end" : "chat-start";
+                        const bubbleColor = isSender ? "bg-blue-500 text-white" : "bg-gray-200 text-black";
+                        const nameColor = isSender ? "text-blue-300" : "text-gray-500";
+
+                        return (
+                            <div key={index} className={`chat ${position}`}>
+                                <div className={`chat-header text-xs ${nameColor}`}>
+                                    {msg.firstName}
+                                </div>
+                                <div className={`chat-bubble ${bubbleColor}`}>
+                                    {msg.text}
+                                </div>
+                                <div className="chat-footer text-xs text-gray-400">
+                                    {msg.time}
+                                </div>
+
                             </div>
-                            <div className="chat-bubble">{msg.text}</div>
-                            <div className="chat-footer opacity-50">{msg.footer}</div>
-                        </div>
-                    ))}
+                        );
+                    })}
+
                 </div>
 
                 <div className="p-3 border-t flex items-center">
@@ -73,8 +100,10 @@ const Chat = () => {
                         type="text"
                         placeholder="Type a message…"
                         className="input input-bordered w-full rounded-md"
+                        value={newMessage}
+                        onChange={(e) => setNewMessage(e.target.value)}
                     />
-                    <button className="ml-3 btn btn-primary rounded-md px-6">Send</button>
+                    <button className="ml-3 btn btn-primary rounded-md px-6" onClick={handleMessage}>Send</button>
                 </div>
             </div>
         </div>
