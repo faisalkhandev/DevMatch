@@ -11,9 +11,7 @@ async function userAuth(req, res, next) {
             });
         }
 
-
         const verifyToken = await jwt.verify(token, process.env.JWT_SECRET);
-        console.log("jwtProcess1::", process.env.JWT_SECRET)
 
         if (verifyToken) {
             req.userId = verifyToken.id;

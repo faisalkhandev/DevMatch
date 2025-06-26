@@ -6,7 +6,9 @@ const { profileRouter } = require("./routes/profileRoute");
 const { authRouter } = require("./routes/authRoute");
 const { requestRouter } = require("./routes/requestRoute");
 const { userRouter } = require("./routes/userRoute");
-var cors = require('cors')
+var cors = require('cors');
+const initializeSocket = require("./utils/socket");
+
 require("dotenv").config();
 require("./utils/cronJob")
 
@@ -28,6 +30,11 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
+
+// create cors for the socket. 
+initializeSocket(server)
+
+
 
 app.use((err, req, res, next) => {
     if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
