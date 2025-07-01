@@ -28,7 +28,7 @@ const Login = () => {
     // Handle form submit
     async function handleSubmit(e) {
         e.preventDefault();
-        console.log("Logging in with:", formData);
+
         try {
 
             const res = await axios.post(BASE_URL + '/api/v1/login', formData, {
