@@ -32,6 +32,7 @@ const Chat = () => {
                     firstName: senderId?.firstName,
                     lastName: senderId?.lastName,
                     text,
+                    senderId: senderId,
                 };
             });
 
@@ -41,11 +42,10 @@ const Chat = () => {
         }
     };
 
-
     useEffect(() => {
+        if (!userId) return;
         fetchChatMessages();
-    }, [targetUserId]);
-
+    }, [userId, targetUserId]);
 
     // Auto scroll to bottom when messages change
     useEffect(() => {
@@ -56,13 +56,12 @@ const Chat = () => {
 
     // Initialize socket and listen for incoming messages
     useEffect(() => {
-        if (!userId) return;
+        if (!userId || !targetUserId) return;
 
         const socket = createSocketConnection();
         socket.emit("joinChat", { firstName, lastName, senderId: userId, receiverId: targetUserId });
 
         socket.on("receiveMessage", ({ text, time, firstName, senderId, receiverId }) => {
-
             const formattedTime = new Date(time).toLocaleTimeString();
             setMessages((prevMessages) => [
                 ...prevMessages,
@@ -74,8 +73,6 @@ const Chat = () => {
             socket.disconnect();
         };
     }, [userId, targetUserId]);
-
-
 
     const handleMessage = () => {
         const socket = createSocketConnection();
@@ -92,6 +89,13 @@ const Chat = () => {
         // Emit to socket
         socket.emit("sendMessage", msg);
         setNewMessage('');
+    };
+
+    // Handle Enter key press for sending messages
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            handleMessage();
+        }
     };
 
     return (
@@ -116,9 +120,9 @@ const Chat = () => {
                                 <div className={`chat-bubble ${bubbleColor}`}>
                                     {msg.text}
                                 </div>
-                                <div className="chat-footer text-xs text-gray-400">
+                                {/* <div className="chat-footer text-xs text-gray-400">
                                     {msg.time && new Date(msg.time).toLocaleTimeString()}
-                                </div>
+                                </div> */}
                             </div>
                         );
                     })}
@@ -131,6 +135,7 @@ const Chat = () => {
                         className="input input-bordered w-full rounded-md"
                         value={newMessage}
                         onChange={(e) => setNewMessage(e.target.value)}
+                        onKeyPress={handleKeyPress}
                     />
                     <button
                         className="ml-3 btn btn-primary rounded-md px-6"
