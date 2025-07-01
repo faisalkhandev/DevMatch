@@ -8,6 +8,7 @@ const { requestRouter } = require("./routes/requestRoute");
 const { userRouter } = require("./routes/userRoute");
 var cors = require('cors');
 const initializeSocket = require("./utils/socket");
+const { chatRouter } = require("./routes/chatRoute");
 
 require("dotenv").config();
 require("./utils/cronJob")
@@ -53,6 +54,8 @@ app.use("/api/v1/", authRouter)
 app.use("/api/v1/", profileRouter)
 app.use("/api/v1/", requestRouter)
 app.use("/api/v1/", userRouter)
+app.use("/api/v1/", chatRouter)
+
 
 // process.env.PORT ||
 

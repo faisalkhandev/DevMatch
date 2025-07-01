@@ -42,14 +42,14 @@ const initializeSocket = (server) => {
                         messages: []
                     })
                 }
-                chat.messages.push({
+                const newMessage = {
                     senderId,
-                    text
-                })
+                    text,
+                };
 
+                chat.messages.push(newMessage)
 
                 await chat.save();
-                console.log("chat saved...!")
 
                 io.to(roomId).emit("receiveMessage", { text, time, firstName, senderId, receiverId });
             } catch (error) {
