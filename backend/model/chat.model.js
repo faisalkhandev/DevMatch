@@ -1,8 +1,6 @@
 const mongoose = require("mongoose")
 
-
 const chatSchema = new mongoose.Schema({
-
     // participants will have senderId and recieverId
     participants: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -19,12 +17,15 @@ const chatSchema = new mongoose.Schema({
             type: String,
             required: true,
         },
+        createdAt: {
+            type: Date,
+            default: Date.now
+        }
     }],
 },
     {
         timestamps: true
     }
-
 )
 
 const Chat = new mongoose.model("Chat", chatSchema)

@@ -3,7 +3,6 @@ const Chat = require("../model/chat.model");
 async function getChat(req, res) {
     const userId = req.userId;
     const { targetUserId } = req.params;
-
     console.log("userId, targetId", userId, targetUserId)
 
     try {
@@ -22,20 +21,19 @@ async function getChat(req, res) {
             });
         }
 
-        // Format messages
+        // Format messages with timestamps
         const formattedMessages = userChat.messages.map(msg => ({
             senderId: msg.senderId._id,
             firstName: msg.senderId.firstName,
             lastName: msg.senderId.lastName,
             text: msg.text,
-            
+            time: msg.createdAt // Include the timestamp
         }));
 
         return res.status(200).json({
             success: true,
             messages: formattedMessages,
         });
-
     } catch (error) {
         console.error("Error fetching chat:", error);
         res.status(500).json({

@@ -9,7 +9,6 @@ const getSecretRoomId = (senderId, receiverId) => {
         .digest("hex");
 };
 
-
 const initializeSocket = (server) => {
     const io = socket(server, {
         cors: {
@@ -42,21 +41,28 @@ const initializeSocket = (server) => {
                         messages: []
                     })
                 }
+
+                const messageTime = new Date();
                 const newMessage = {
                     senderId,
                     text,
+                    createdAt: messageTime // Add timestamp to the message
                 };
 
                 chat.messages.push(newMessage)
-
                 await chat.save();
 
-                io.to(roomId).emit("receiveMessage", { text, time, firstName, senderId, receiverId });
+                // Send the timestamp back to clients
+                io.to(roomId).emit("receiveMessage", {
+                    text,
+                    time: messageTime, // Use the actual saved timestamp
+                    firstName,
+                    senderId,
+                    receiverId
+                });
             } catch (error) {
                 console.log("error at sending msg: ", error)
             }
-
-
         });
 
         //user disconnect the socket.
