@@ -15,7 +15,10 @@ const onlineUsers = new Map();
 const initializeSocket = (server) => {
     const io = socket(server, {
         cors: {
-            origin: "http://localhost:5000",
+            origin: [
+                "http://localhost:5000",
+                "https://devmatching.faisalkhandev.com"
+            ],
         },
     });
 
