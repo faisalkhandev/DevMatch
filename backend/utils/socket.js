@@ -19,8 +19,8 @@ const initializeSocket = (server) => {
                 "http://localhost:5000",
                 "https://devmatching.faisalkhandev.com"
             ],
-            // methods: ["GET", "POST"],
-            // credentials: true
+            methods: ["GET", "POST"],
+            credentials: true
         },
     });
 
