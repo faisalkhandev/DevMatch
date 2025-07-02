@@ -17,6 +17,7 @@ const Chat = () => {
     const [newMessage, setNewMessage] = useState('');
     const [messages, setMessages] = useState([]);
     const chatContainerRef = useRef();
+    const socketRef = useRef();
 
     const fetchChatMessages = async () => {
         try {
@@ -57,31 +58,26 @@ const Chat = () => {
 
     // Initialize socket and listen for incoming messages
     useEffect(() => {
-        if (!userId || !targetUserId) return;
+        socketRef.current = createSocketConnection();
 
-        console.log("[SOCKET] before socket connection...");
-        const socket = createSocketConnection();
-        console.log("[SOCKET] after socket connection...");
+        socketRef.current.emit("joinChat", {
+            firstName,
+            lastName,
+            senderId: userId,
+            receiverId: targetUserId,
+        });
 
-        socket.emit("joinChat", { firstName, lastName, senderId: userId, receiverId: targetUserId });
-
-        console.log("joinChat")
-
-        socket.on("receiveMessage", ({ text, time, firstName, senderId, receiverId }) => {
+        socketRef.current.on("receiveMessage", ({ text, time, firstName, senderId, receiverId }) => {
             console.log("[SOCKET] Message received:", { text, senderId, receiverId });
-            setMessages((prevMessages) => [
-                ...prevMessages,
-                { text, time, firstName, senderId, receiverId },
-            ]);
+            setMessages((prev) => [...prev, { text, time, firstName, senderId, receiverId }]);
         });
 
         return () => {
-            socket.disconnect();
+            socketRef.current?.disconnect();
         };
     }, [userId, targetUserId]);
 
     const handleMessage = () => {
-        const socket = createSocketConnection();
         if (!newMessage.trim()) return;
 
         const msg = {
@@ -93,7 +89,7 @@ const Chat = () => {
         };
 
         // Emit to socket
-        socket.emit("sendMessage", msg);
+        socketRef.current.emit("sendMessage", msg);
         setNewMessage('');
     };
 
