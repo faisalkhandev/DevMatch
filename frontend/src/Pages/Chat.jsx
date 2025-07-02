@@ -59,10 +59,16 @@ const Chat = () => {
     useEffect(() => {
         if (!userId || !targetUserId) return;
 
+        console.log("[SOCKET] before socket connection...");
         const socket = createSocketConnection();
+        console.log("[SOCKET] after socket connection...");
+
         socket.emit("joinChat", { firstName, lastName, senderId: userId, receiverId: targetUserId });
 
+        console.log("joinChat")
+
         socket.on("receiveMessage", ({ text, time, firstName, senderId, receiverId }) => {
+            console.log("[SOCKET] Message received:", { text, senderId, receiverId });
             setMessages((prevMessages) => [
                 ...prevMessages,
                 { text, time, firstName, senderId, receiverId },

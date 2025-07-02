@@ -19,49 +19,50 @@ const initializeSocket = (server) => {
                 "http://localhost:5000",
                 "https://devmatching.faisalkhandev.com"
             ],
+            // methods: ["GET", "POST"],
+            // credentials: true
         },
     });
 
     io.on("connection", (socket) => {
+        console.log(`[SOCKET] Client connected: ${socket.id}`);
 
-        //user can join the chat.
         socket.on("joinChat", ({ senderId, receiverId, firstName, lastName }) => {
-            const roomId = getSecretRoomId(senderId, receiverId)
-
+            const roomId = getSecretRoomId(senderId, receiverId);
+            console.log(`[JOIN] User ${senderId} joined room: ${roomId}`);
             onlineUsers.set(senderId, socket.id);
-
             io.emit("updateUserStatus", Array.from(onlineUsers.keys()));
-
             socket.join(roomId);
         });
 
-        //user can send the message.
         socket.on("sendMessage", async ({ firstName, senderId, receiverId, text, time }) => {
+            console.log(`[SEND] Received message from ${senderId} to ${receiverId}: "${text}"`);
             try {
-                const roomId = getSecretRoomId(senderId, receiverId)
+                const roomId = getSecretRoomId(senderId, receiverId);
 
                 let chat = await Chat.findOne({
                     participants: { $all: [senderId, receiverId] }
-                })
+                });
 
                 if (!chat) {
+                    console.log(`[DB] No chat found. Creating new chat for ${senderId} & ${receiverId}`);
                     chat = new Chat({
                         participants: [senderId, receiverId],
                         messages: []
-                    })
+                    });
                 }
 
                 const messageTime = new Date();
                 const newMessage = {
                     senderId,
                     text,
-                    createdAt: messageTime // Add timestamp to the message
+                    createdAt: messageTime
                 };
 
-                chat.messages.push(newMessage)
+                chat.messages.push(newMessage);
                 await chat.save();
 
-                // Send the timestamp back to clients
+                console.log(`[SEND] Emitting message to room ${roomId}`);
                 io.to(roomId).emit("receiveMessage", {
                     text,
                     time: messageTime,
@@ -70,12 +71,12 @@ const initializeSocket = (server) => {
                     receiverId
                 });
             } catch (error) {
-                console.log("error at sending msg: ", error)
+                console.error("[ERROR] Error sending message:", error);
             }
         });
 
-        //user disconnect the socket.
         socket.on("disconnect", async () => {
+            console.log(`[SOCKET] Client disconnected: ${socket.id}`);
             for (const [userId, socketId] of onlineUsers.entries()) {
                 if (socketId === socket.id) {
                     onlineUsers.delete(userId);
@@ -83,10 +84,10 @@ const initializeSocket = (server) => {
                         await userModel.findByIdAndUpdate(userId, {
                             lastSeen: new Date(),
                         });
+                        console.log(`[STATUS] Updated lastSeen for ${userId}`);
                     } catch (err) {
-                        console.error("Error updating last seen:", err);
+                        console.error("[ERROR] Updating last seen:", err);
                     }
-
                     break;
                 }
             }
@@ -94,5 +95,6 @@ const initializeSocket = (server) => {
         });
     });
 };
+
 
 module.exports = initializeSocket;
