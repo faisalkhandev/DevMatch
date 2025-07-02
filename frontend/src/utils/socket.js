@@ -4,10 +4,5 @@ import { BASE_URL } from './constant';
 
 
 export function createSocketConnection() {
-    if (location.hostname === "localhost") {
-        return io(BASE_URL)
-    }
-    else {
-        return io("/", { path: "/socket.io" })
-    }
+    return io(BASE_URL)
 }
