@@ -9,6 +9,8 @@ const getSecretRoomId = (senderId, receiverId) => {
         .digest("hex");
 };
 
+const onlineUsers = new Map();
+
 const initializeSocket = (server) => {
     const io = socket(server, {
         cors: {
@@ -22,6 +24,11 @@ const initializeSocket = (server) => {
         socket.on("joinChat", ({ senderId, receiverId, firstName, lastName }) => {
             const roomId = getSecretRoomId(senderId, receiverId)
             console.log("roomID::", roomId)
+
+            onlineUsers.set(senderId, socket.id);
+
+            io.emit("updateUserStatus", Array.from(onlineUsers.keys()));
+
             socket.join(roomId);
         });
 
@@ -55,7 +62,7 @@ const initializeSocket = (server) => {
                 // Send the timestamp back to clients
                 io.to(roomId).emit("receiveMessage", {
                     text,
-                    time: messageTime, // Use the actual saved timestamp
+                    time: messageTime,
                     firstName,
                     senderId,
                     receiverId
@@ -67,9 +74,15 @@ const initializeSocket = (server) => {
 
         //user disconnect the socket.
         socket.on("disconnect", () => {
-            console.log(`❌ User disconnected: ${socket.id}`);
+            for (const [userId, socketId] of onlineUsers.entries()) {
+                if (socketId === socket.id) {
+                    onlineUsers.delete(userId);
+                    console.log(`${userId} is offline`);
+                    break;
+                }
+            }
+            io.emit("updateUserStatus", Array.from(onlineUsers.keys()));
         });
-
     });
 };
 
