@@ -13,12 +13,10 @@ const Card = ({ data }) => {
                 , {
                     withCredentials: true,
                 });
-            console.log(response);
             dispatch(removeFeedItem(reqId))
             showToast(response.data.message, "success");
 
         } catch (error) {
-            console.log("errrorSend::", error)
             showToast(error.response.data.message, "error");
         }
 

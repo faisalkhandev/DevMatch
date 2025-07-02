@@ -16,7 +16,6 @@ const Connections = () => {
             const response = await axios.get(BASE_URL + "/api/v1/user/connections", {
                 withCredentials: true
             });
-            console.log("response:::", response.data.friends)
             dispatch(addConnections(response.data.friends));
 
         } catch (error) {

@@ -67,7 +67,6 @@ async function logIn(req, res) {
             }
         );
 
-        console.log("loginJWT:::", process.env.JWT_SECRET)
 
         res.cookie("token", token, {
             maxAge: 24 * 60 * 60 * 1000, // 1 day in milliseconds

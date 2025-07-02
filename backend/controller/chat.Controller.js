@@ -3,7 +3,6 @@ const Chat = require("../model/chat.model");
 async function getChat(req, res) {
     const userId = req.userId;
     const { targetUserId } = req.params;
-    console.log("userId, targetId", userId, targetUserId)
 
     try {
         const userChat = await Chat.findOne({

@@ -23,7 +23,6 @@ const initializeSocket = (server) => {
         //user can join the chat.
         socket.on("joinChat", ({ senderId, receiverId, firstName, lastName }) => {
             const roomId = getSecretRoomId(senderId, receiverId)
-            console.log("roomID::", roomId)
 
             onlineUsers.set(senderId, socket.id);
 
@@ -36,7 +35,6 @@ const initializeSocket = (server) => {
         socket.on("sendMessage", async ({ firstName, senderId, receiverId, text, time }) => {
             try {
                 const roomId = getSecretRoomId(senderId, receiverId)
-                console.log(firstName + " says " + text, time)
 
                 let chat = await Chat.findOne({
                     participants: { $all: [senderId, receiverId] }
@@ -77,7 +75,6 @@ const initializeSocket = (server) => {
             for (const [userId, socketId] of onlineUsers.entries()) {
                 if (socketId === socket.id) {
                     onlineUsers.delete(userId);
-                    console.log(`${userId} is offline`);
                     break;
                 }
             }

@@ -28,7 +28,6 @@ const Friends = () => {
         };
     }, [userId]);
 
-    console.log("onlineUser:::", onlineUsers)
 
     return (
 

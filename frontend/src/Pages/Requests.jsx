@@ -10,7 +10,6 @@ const Requests = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const requests = useSelector((state) => state?.requests?.data);
-    console.log('requestSelector::', requests);
 
 
     async function reviewRequest(reqId, status) {
@@ -21,13 +20,11 @@ const Requests = () => {
                 { withCredentials: true }
 
             );
-            console.log('reviewRequest:', res?.data?.message);
             showToast(res?.data?.message, "success")
             dispatch(removeRequest(reqId))
             getRequests();
             navigate("/friends")
         } catch (error) {
-            console.log('reviewRequestError:', error);
             showToast(error.response?.data || "An error occurred", "error");
         }
     }
@@ -39,7 +36,6 @@ const Requests = () => {
             const res = await axios.get(BASE_URL + '/api/v1/user/requests', {
                 withCredentials: true,
             });
-            console.log('requestData:', res?.data);
             dispatch(addRequests(res?.data?.pendingRequest));
         } catch (error) {
             console.log('requestError:', error);
