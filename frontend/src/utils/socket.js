@@ -8,6 +8,9 @@ export function createSocketConnection() {
         return io(BASE_URL)
     }
     else {
-        return io("/", { path: "/socket.io" })
+        return io("https://devmatching.faisalkhandev.com", {
+            path: "/socket.io",
+            transports: ["websocket"]
+        });
     }
 }
