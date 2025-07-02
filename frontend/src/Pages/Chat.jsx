@@ -27,12 +27,13 @@ const Chat = () => {
             console.log("chatAPI:", chat);
 
             const chatMessages = chat?.data?.messages.map((msg) => {
-                const { senderId, text } = msg;
+                const { senderId, text, time } = msg;
                 return {
-                    firstName: senderId?.firstName,
-                    lastName: senderId?.lastName,
+                    firstName: msg.firstName,
+                    lastName: msg.lastName,
                     text,
                     senderId: senderId,
+                    time: time
                 };
             });
 
@@ -62,10 +63,9 @@ const Chat = () => {
         socket.emit("joinChat", { firstName, lastName, senderId: userId, receiverId: targetUserId });
 
         socket.on("receiveMessage", ({ text, time, firstName, senderId, receiverId }) => {
-            const formattedTime = new Date(time).toLocaleTimeString();
             setMessages((prevMessages) => [
                 ...prevMessages,
-                { text, time: formattedTime, firstName, senderId, receiverId },
+                { text, time, firstName, senderId, receiverId },
             ]);
         });
 
@@ -98,6 +98,13 @@ const Chat = () => {
         }
     };
 
+    // Format time helper function
+    const formatTime = (timeString) => {
+        if (!timeString) return '';
+        const date = new Date(timeString);
+        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    };
+
     return (
         <div className="flex justify-center items-center mt-10">
             <div className="flex flex-col h-[500px] w-full max-w-2xl border rounded-xl shadow overflow-hidden">
@@ -110,7 +117,7 @@ const Chat = () => {
                         const isSender = msg.senderId === userId;
                         const position = isSender ? "chat-end" : "chat-start";
                         const bubbleColor = isSender ? "bg-blue-500 text-white" : "bg-gray-200 text-black";
-                        const nameColor = isSender ? "text-blue-300" : "text-gray-500";
+                        const nameColor = isSender ? "text-blue-300" : "text-gray-300";
 
                         return (
                             <div key={index} className={`chat ${position}`}>
@@ -120,9 +127,9 @@ const Chat = () => {
                                 <div className={`chat-bubble ${bubbleColor}`}>
                                     {msg.text}
                                 </div>
-                                {/* <div className="chat-footer text-xs text-gray-400">
-                                    {msg.time && new Date(msg.time).toLocaleTimeString()}
-                                </div> */}
+                                <div className="chat-footer text-xs text-gray-400">
+                                    {formatTime(msg.time)}
+                                </div>
                             </div>
                         );
                     })}
