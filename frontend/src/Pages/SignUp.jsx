@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { BASE_URL } from "../utils/constant";
 import { showToast } from "../components/ToastHelper.js";
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 
 const SignUp = () => {
 
@@ -156,7 +156,7 @@ const SignUp = () => {
                     <div>
                         <button
                             type="submit"
-                            className="flex w-full justify-center rounded-md bg-blue-500 px-3 py-1.5 text-sm font-semibold text-white shadow-xs hover:bg-blue-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            className="flex w-full justify-center rounded-md bg-blue-500 px-3 py-1.5 text-sm font-semibold text-white shadow-xs hover:bg-blue-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 cursor-pointer"
                         >
                             Sign up
                         </button>
@@ -166,12 +166,12 @@ const SignUp = () => {
                 {/* Login message */}
                 <div className="mt-6 text-center text-sm text-white">
                     Already have an account?{" "}
-                    <a
-                        href="/login"
-                        className="font-semibold text-blue-500 hover:text-blue-600"
+                    <Link
+                        to="/login"
+                        className="font-semibold text-blue-500 hover:text-blue-600 cursor-pointer"
                     >
                         Log in
-                    </a>
+                    </Link>
                 </div>
             </div>
         </div>
