@@ -42,6 +42,8 @@ const Friends = () => {
                     {friends.map((friend, index) => {
 
                         const isOnline = onlineUsers.includes(friend._id);
+                        const lastSeen = friend.lastSeen ? new Date(friend.lastSeen).toLocaleString() : null;
+
                         return (
 
                             <li
@@ -63,6 +65,8 @@ const Friends = () => {
                                     <div className="ml-4 text-left">
                                         <div className="uppercase font-bold">{friend.firstName + ' ' + friend.lastName}</div>
                                         <div className="text-xs font-semibold text-gray-400">{friend.gender}</div>
+                                        <div className="text-xs font-semibold text-gray-400">{lastSeen}</div>
+
                                     </div>
 
 
@@ -80,7 +84,7 @@ const Friends = () => {
                                                 <path
                                                     d="M8 12H8.01M12 12H12.01M16 12H16.01M21.0039 12C21.0039 16.9706 16.9745 21 12.0039 21C9.9675 21 3.00463 21 3.00463 21C3.00463 21 4.56382 17.2561 3.93982 16.0008C3.34076 14.7956 3.00391 13.4372 3.00391 12C3.00391 7.02944 7.03334 3 12.0039 3C16.9745 3 21.0039 7.02944 21.0039 12Z"
                                                     stroke="#f0f0f0"
-                                                    strokeWidth="2"
+                                                    strokeWidth="3"
                                                     strokeLinecap="round"
                                                     strokeLinejoin="round"
                                                 />

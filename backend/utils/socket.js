@@ -1,6 +1,7 @@
 const socket = require("socket.io");
 const crypto = require("crypto");
 const Chat = require("../model/chat.model");
+const { userModel } = require("../model/user.model");
 
 const getSecretRoomId = (senderId, receiverId) => {
     return crypto
@@ -71,10 +72,18 @@ const initializeSocket = (server) => {
         });
 
         //user disconnect the socket.
-        socket.on("disconnect", () => {
+        socket.on("disconnect", async () => {
             for (const [userId, socketId] of onlineUsers.entries()) {
                 if (socketId === socket.id) {
                     onlineUsers.delete(userId);
+                    try {
+                        await userModel.findByIdAndUpdate(userId, {
+                            lastSeen: new Date(),
+                        });
+                    } catch (err) {
+                        console.error("Error updating last seen:", err);
+                    }
+
                     break;
                 }
             }

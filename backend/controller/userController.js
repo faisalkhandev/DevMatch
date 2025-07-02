@@ -9,6 +9,7 @@ const USER_DATA = [
     "photoUrl",
     "about",
     "skills",
+    "lastSeen",
 ];
 
 async function userAllConnection(req, res) {

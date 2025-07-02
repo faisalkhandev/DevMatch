@@ -73,6 +73,7 @@ const userSchema = new mongoose.Schema(
         skills: {
             type: [String],
         },
+        lastSeen: { type: Date, default: null }
     },
     {
         timestamps: true,
