@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import { createSocketConnection } from '../utils/socket';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { formatDistanceToNow } from 'date-fns';
 
 const socket = createSocketConnection();
 
@@ -42,7 +43,13 @@ const Friends = () => {
                     {friends.map((friend, index) => {
 
                         const isOnline = onlineUsers.includes(friend._id);
-                        const lastSeen = friend.lastSeen ? new Date(friend.lastSeen).toLocaleString() : null;
+                        const lastSeen = friend.lastSeen;
+
+                        const lastSeenText = isOnline
+                            ? "Online"
+                            : lastSeen
+                                ? `Last seen ${formatDistanceToNow(new Date(lastSeen), { addSuffix: true })}`
+                                : "Offline";
 
                         return (
 
@@ -65,7 +72,7 @@ const Friends = () => {
                                     <div className="ml-4 text-left">
                                         <div className="uppercase font-bold">{friend.firstName + ' ' + friend.lastName}</div>
                                         <div className="text-xs font-semibold text-gray-400">{friend.gender}</div>
-                                        <div className="text-xs font-semibold text-gray-400">{lastSeen}</div>
+                                        <div className="text-xs font-semibold text-gray-400">{lastSeenText}</div>
 
                                     </div>
 
